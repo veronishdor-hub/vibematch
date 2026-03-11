@@ -1,40 +1,76 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="ru">
 <head>
 <meta charset="UTF-8">
-
-<script src="//api.bitrix24.com/api/v1/"></script>
+<title>Вайбмэтч</title>
 
 <style>
 
 body{
 font-family:Arial;
-text-align:center;
-background:#f5f5f5;
+background:#f5f6fa;
+display:flex;
+justify-content:center;
+margin-top:40px;
+}
+
+.container{
+width:360px;
+}
+
+.header{
+background:#6f3ff5;
+color:white;
+padding:16px;
+border-radius:12px;
+margin-bottom:20px;
+}
+
+.title{
+font-size:20px;
+font-weight:bold;
+}
+
+.subtitle{
+font-size:13px;
+opacity:0.9;
+margin-top:4px;
 }
 
 .card{
-width:300px;
-margin:50px auto;
 background:white;
 padding:20px;
-border-radius:20px;
-box-shadow:0 5px 20px rgba(0,0,0,0.1);
+border-radius:16px;
+box-shadow:0 5px 20px rgba(0,0,0,0.08);
+margin-bottom:20px;
 }
 
-img{
-width:100%;
-border-radius:15px;
+.name{
+font-size:22px;
+font-weight:bold;
+}
+
+.meta{
+color:#666;
+margin-top:5px;
+}
+
+.desc{
+margin-top:15px;
+}
+
+.buttons{
+display:flex;
+justify-content:space-between;
+margin-top:20px;
 }
 
 button{
-font-size:20px;
-margin:10px;
-padding:10px 20px;
 border:none;
-border-radius:12px;
+padding:10px 14px;
+border-radius:10px;
 cursor:pointer;
+font-size:14px;
 }
 
 .like{
@@ -43,83 +79,245 @@ color:white;
 }
 
 .skip{
+background:#e0e0e0;
+}
+
+.coffee{
+background:#6f3ff5;
+color:white;
+width:100%;
+margin-bottom:15px;
+}
+
+.chat{
+background:#00a884;
+color:white;
+width:100%;
+margin-top:10px;
+display:none;
+}
+
+select{
+margin-bottom:10px;
+padding:8px;
+border-radius:8px;
+}
+
+.stats{
+margin-bottom:10px;
+color:#555;
+}
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+}
+
+.coffeeCard{
+background:white;
+padding:12px;
+border-radius:12px;
+box-shadow:0 3px 10px rgba(0,0,0,0.08);
+}
+
+.coffeeCard button{
+margin-top:8px;
+background:#6f3ff5;
+color:white;
+width:100%;
+}
+
+.back{
+margin-top:15px;
+width:100%;
 background:#ddd;
 }
 
 </style>
-
 </head>
 
 <body>
 
-<h1>Вайбмэтч 💜</h1>
+<div class="container">
+
+<div class="header">
+<div class="title">💜 Вайбмэтч — давай знакомиться? :)</div>
+<div class="subtitle">для новых встреч, людей и впечатлений</div>
+</div>
+
+<div id="mainMode">
+
+<div class="stats" id="stats">
+Вайбов поставлено: 0
+</div>
+
+<select onchange="filterCity(this.value)">
+<option value="all">Все города</option>
+<option value="Москва">Москва</option>
+<option value="Питер">Питер</option>
+<option value="Калининград">Калининград</option>
+<option value="Владимир">Владимир</option>
+</select>
+
+<button class="coffee" onclick="randomCoffeeMode()">
+☕ рандом-кофе
+</button>
 
 <div class="card">
 
-<img id="photo">
+<div class="name" id="name"></div>
+<div class="meta" id="meta"></div>
+<div class="desc" id="desc"></div>
 
-<h2 id="name"></h2>
+<div class="buttons">
+<button class="skip" onclick="nextPerson()">дальше</button>
+<button class="like" onclick="like()">❤️ вайб</button>
+</div>
 
-<p id="city"></p>
+<button class="chat" id="chatButton">
+💬 написать
+</button>
 
 </div>
 
-<button class="skip" onclick="skip()">👎 пропустить</button>
-<button class="like" onclick="like()">❤️ вайб</button>
+</div>
+
+
+<div id="coffeeMode" style="display:none">
+
+<div class="card">
+<b>Выберите коллегу для рандом-кофе ☕</b>
+
+<div class="grid" id="coffeeGrid"></div>
+
+<button class="back" onclick="exitCoffeeMode()">← вернуться к поиску</button>
+
+</div>
+
+</div>
+
+</div>
 
 <script>
 
-let users = []
-let current = 0
+let people = [
 
-BX24.init(function(){
+{name:"Анна Петрова",city:"Москва",dept:"Маркетинг",desc:"Люблю бегать по утрам и искать новые кофейни."},
 
-BX24.callMethod(
-'user.get',
-{ACTIVE:true},
-function(result){
+{name:"Игорь Сидоров",city:"Питер",dept:"Разработка",desc:"Фанат настолок, геймдева и технологий."},
 
-users = result.data()
+{name:"Мария Иванова",city:"Калининград",dept:"HR",desc:"Люблю общаться с людьми и путешествовать."},
 
-showUser()
+{name:"Алексей Ковалев",city:"Владимир",dept:"Продажи",desc:"Люблю спорт, переговоры и хороший кофе."},
 
-})
+{name:"Елена Смирнова",city:"Москва",dept:"Дизайн",desc:"Люблю искусство, кино и прогулки."},
 
-})
+{name:"Дмитрий Орлов",city:"Питер",dept:"Поддержка",desc:"Люблю музыку и путешествия."}
 
-function showUser(){
+]
 
-let u = users[current]
+let filteredPeople = people
+let currentIndex = 0
+let vibes = 0
 
-document.getElementById("name").innerText =
-u.NAME + " " + u.LAST_NAME
+function showPerson(){
 
-document.getElementById("photo").src =
-u.PERSONAL_PHOTO
+let person = filteredPeople[currentIndex]
 
-document.getElementById("city").innerText =
-u.WORK_CITY || ""
+document.getElementById("name").innerText = person.name
+document.getElementById("meta").innerText = person.dept + " • " + person.city
+document.getElementById("desc").innerText = person.desc
+
+document.getElementById("chatButton").style.display="none"
+
+}
+
+function nextPerson(){
+
+currentIndex++
+
+if(currentIndex >= filteredPeople.length){
+currentIndex = 0
+}
+
+showPerson()
 
 }
 
 function like(){
 
-alert("Вайб!")
+vibes++
 
-current++
-showUser()
+document.getElementById("stats").innerText =
+"Вайбов поставлено: " + vibes
+
+document.getElementById("chatButton").style.display="block"
+
+}
+
+function filterCity(city){
+
+if(city==="all"){
+filteredPeople = people
+}else{
+filteredPeople = people.filter(p => p.city === city)
+}
+
+currentIndex = 0
+showPerson()
 
 }
 
-function skip(){
+function randomCoffeeMode(){
 
-current++
-showUser()
+document.getElementById("mainMode").style.display="none"
+document.getElementById("coffeeMode").style.display="block"
+
+let grid = document.getElementById("coffeeGrid")
+grid.innerHTML=""
+
+let shuffled=[...people].sort(()=>0.5-Math.random()).slice(0,4)
+
+shuffled.forEach(p=>{
+
+let div=document.createElement("div")
+div.className="coffeeCard"
+
+div.innerHTML=`
+<b>${p.name}</b><br>
+${p.dept}<br>
+${p.city}
+<button onclick="invite('${p.name}')">пригласить</button>
+`
+
+grid.appendChild(div)
+
+})
 
 }
+
+function exitCoffeeMode(){
+
+document.getElementById("coffeeMode").style.display="none"
+document.getElementById("mainMode").style.display="block"
+
+}
+
+function invite(name){
+
+alert(
+"Привет! 👋\n\n"+
+"Мы совпали в Вайбмэтче.\n"+
+"Пойдём на рандом-кофе? ☕\n\n"+
+name
+)
+
+}
+
+showPerson()
 
 </script>
 
 </body>
-
 </html>
