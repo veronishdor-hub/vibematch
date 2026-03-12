@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html>
 <head>
@@ -87,14 +88,29 @@ cursor:pointer;
 z-index:1000;
 }
 
+/* MATCH */
+
 .matchContainer{
 display:flex;
 justify-content:center;
 align-items:center;
+gap:16px;
+margin-top:40px;
+}
+
+#mainCard{
+width:240px;
+transition:0.3s;
+}
+
+.sideCard{
+width:200px;
+opacity:0.5;
+filter:blur(3px);
+transform:scale(0.9);
 }
 
 .card{
-width:240px;
 background:white;
 color:black;
 border-radius:18px;
@@ -125,6 +141,8 @@ justify-content:space-between;
 margin-top:10px;
 }
 
+/* COFFEE */
+
 .coffeeGrid{
 display:grid;
 grid-template-columns:1fr 1fr;
@@ -147,6 +165,8 @@ width:100%;
 border-radius:8px;
 }
 
+/* VIBES */
+
 .vibeCard{
 display:flex;
 gap:12px;
@@ -164,6 +184,8 @@ height:50px;
 border-radius:50%;
 }
 
+/* NAV */
+
 .bottomNav{
 position:fixed;
 bottom:0;
@@ -180,6 +202,8 @@ text-align:center;
 font-size:14px;
 cursor:pointer;
 }
+
+/* BACKGROUND */
 
 .bgShapes{
 position:fixed;
@@ -226,22 +250,6 @@ filter:blur(80px);
 opacity:0.6;
 }
 
-.s4{
-width:120px;
-height:120px;
-background:#eaff00;
-top:20%;
-left:10%;
-}
-
-.s5{
-width:90px;
-height:90px;
-background:#7c3aed;
-bottom:25%;
-left:15%;
-}
-
 input,textarea,select{
 width:100%;
 padding:8px;
@@ -259,36 +267,32 @@ border:1px solid #ddd;
 <div class="shape s1"></div>
 <div class="shape s2"></div>
 <div class="shape s3"></div>
-<div class="shape s4"></div>
-<div class="shape s5"></div>
 </div>
 
 <div class="homeButton" onclick="openScreen('start')">🏠</div>
 <div class="profileButton" onclick="openScreen('profile')">👤</div>
 
-<!-- СТАРТ -->
+<!-- START -->
 
 <div id="start" class="screen">
 
-<h1>Вайбмэтч💜 Битрикс24</h1>
+<h1>Вайбмэтч 💜</h1>
 
 <p class="subtitle">
-Пространство для новых знакомств, людей и впечатлений!
+Находи коллег по вайбу
 </p>
 
 <div class="center">
 
 <p>🔥 Мэтч — ищи коллег по вайбу</p>
-<p>☕ Random Coffee — приглашай на кофе случайных коллег</p>
-<p>💌 Вайбы — кто написал и позвал на кофе?</p>
+<p>☕ Random Coffee — приглашай на кофе</p>
+<p>💌 Вайбы — смотри кто написал</p>
 
 <br>
 
-<button class="primary" onclick="startApp()">Начать</button>
-
-<br><br>
-
-<h2>Давай знакомиться!</h2>
+<button class="primary" onclick="startApp()">
+Начать
+</button>
 
 </div>
 
@@ -299,10 +303,16 @@ border:1px solid #ddd;
 <div id="match" class="screen">
 
 <h1>Мэтч режим</h1>
-<p class="subtitle">Ищи коллег по вайбу</p>
+<p class="subtitle">Листай коллег</p>
 
 <div class="matchContainer">
-<div id="card"></div>
+
+<div id="prevCard" class="sideCard"></div>
+
+<div id="mainCard"></div>
+
+<div id="nextCard" class="sideCard"></div>
+
 </div>
 
 </div>
@@ -339,53 +349,39 @@ border:1px solid #ddd;
 
 </div>
 
-<!-- ВАЙБЫ -->
+<!-- VIBES -->
 
 <div id="vibes" class="screen">
 
-<h1>Вайбы коллег</h1>
+<h1>Вайбы</h1>
 
 <div class="vibeCard">
 <img src="https://randomuser.me/api/portraits/women/44.jpg">
-<div>
-<b>Анна</b><br>
-💜 У вас вайбмэтч!
-</div>
+<div><b>Анна</b><br>💜 У вас вайбмэтч</div>
 </div>
 
 <div class="vibeCard">
 <img src="https://randomuser.me/api/portraits/men/32.jpg">
-<div>
-<b>Игорь</b><br>
-☕ Позвал тебя на кофе
-</div>
+<div><b>Игорь</b><br>☕ Позвал тебя на кофе</div>
 </div>
 
 <div class="vibeCard">
 <img src="https://randomuser.me/api/portraits/women/68.jpg">
-<div>
-<b>Мария</b><br>
-💜 Поставила тебе вайб
-</div>
+<div><b>Мария</b><br>💜 Поставила тебе вайб</div>
 </div>
 
 <div class="vibeCard">
 <img src="https://randomuser.me/api/portraits/men/51.jpg">
-<div>
-<b>Денис</b><br>
-☕ Приглашает на кофе
-</div>
+<div><b>Денис</b><br>☕ Приглашает на кофе</div>
 </div>
 
 </div>
 
-<!-- ПРОФИЛЬ -->
+<!-- PROFILE -->
 
 <div id="profile" class="screen">
 
 <h1>Мой профиль</h1>
-
-<div class="matchContainer">
 
 <div class="card">
 
@@ -398,15 +394,17 @@ border:1px solid #ddd;
 
 <input type="file">
 
-<p>У тебя уже <b>25 вайбов!</b></p>
+<p>У тебя уже <b>25 вайбов</b></p>
 
-<button class="primary">Сохранить</button>
+<button class="primary">
+Сохранить
+</button>
+
+</div>
 
 </div>
 
-</div>
-
-</div>
+<!-- NAV -->
 
 <div class="bottomNav">
 
@@ -428,7 +426,7 @@ border:1px solid #ddd;
 
 let people=[
 
-{name:"Анна",city:"Москва",dept:"Маркетинг РФ",about:"Люблю бег",photo:"https://randomuser.me/api/portraits/women/44.jpg"},
+{name:"Анна",city:"Москва",dept:"Маркетинг",about:"Люблю бег",photo:"https://randomuser.me/api/portraits/women/44.jpg"},
 {name:"Игорь",city:"Питер",dept:"Разработка",about:"Пишу код",photo:"https://randomuser.me/api/portraits/men/32.jpg"},
 {name:"Мария",city:"Калининград",dept:"HR",about:"Обожаю кофе",photo:"https://randomuser.me/api/portraits/women/68.jpg"},
 {name:"Денис",city:"Москва",dept:"Продажи",about:"Футбол",photo:"https://randomuser.me/api/portraits/men/51.jpg"},
@@ -439,20 +437,24 @@ let people=[
 let index=0
 
 function openScreen(id){
+
 document.querySelectorAll(".screen").forEach(s=>s.style.display="none")
+
 document.getElementById(id).style.display="block"
+
 }
 
 function startApp(){
+
 openScreen("match")
+
 renderCard()
+
 }
 
-function renderCard(){
+function cardHTML(p,active){
 
-let p=people[index%people.length]
-
-document.getElementById("card").innerHTML=`
+return `
 
 <div class="card">
 
@@ -466,6 +468,8 @@ document.getElementById("card").innerHTML=`
 
 <p>${p.about}</p>
 
+${active ? `
+
 <div class="actions">
 
 <button class="secondary" onclick="skip()">Пропустить</button>
@@ -474,47 +478,50 @@ document.getElementById("card").innerHTML=`
 
 </div>
 
+` : ``}
+
 </div>
 
 `
+
+}
+
+function renderCard(){
+
+let current=people[index%people.length]
+
+let prev=people[(index-1+people.length)%people.length]
+
+let next=people[(index+1)%people.length]
+
+document.getElementById("mainCard").innerHTML=cardHTML(current,true)
+
+document.getElementById("prevCard").innerHTML=cardHTML(prev,false)
+
+document.getElementById("nextCard").innerHTML=cardHTML(next,false)
+
 }
 
 function skip(){
+
 index++
+
 renderCard()
+
 }
 
 function vibe(){
 
 index++
 
-if(index==3){
-
-document.getElementById("card").innerHTML=`
-
-<div class="card">
-
-<h2>💜 Вот это мэтч!</h2>
-
-<p>Давай общаться!</p>
-
-<button class="primary">Написать</button>
-
-</div>
-
-`
-
-}else{
-
 renderCard()
-
-}
 
 }
 
 function generateCoffee(){
 
 let grid=document.getElementById("coffeePeople")
+
 grid.innerHTML=""
 
 for(let i=0;i<4;i++){
@@ -545,15 +552,18 @@ function blindChoice(){
 
 let p=people[Math.floor(Math.random()*people.length)]
 
-alert("Твой кофе сегодня с "+p.name)
+alert("Сегодня кофе с "+p.name)
 
 }
 
 window.onload=function(){
+
 openScreen("start")
+
 }
 
 </script>
 
 </body>
 </html>
+```
