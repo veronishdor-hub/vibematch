@@ -12,6 +12,7 @@ margin:0;
 font-family:Arial;
 background:linear-gradient(135deg,#6d28d9,#7c3aed);
 color:white;
+overflow-x:hidden;
 }
 
 .screen{
@@ -21,14 +22,12 @@ min-height:100vh;
 box-sizing:border-box;
 }
 
-h1{
-text-align:center;
-}
+h1{text-align:center;}
 
 .subtitle{
 text-align:center;
-opacity:0.9;
 margin-bottom:30px;
+opacity:0.95;
 }
 
 button{
@@ -50,9 +49,9 @@ background:white;
 color:black;
 }
 
-.center{
-text-align:center;
-}
+.center{text-align:center}
+
+/* TOP BUTTONS */
 
 .homeButton{
 position:fixed;
@@ -98,10 +97,7 @@ gap:16px;
 margin-top:40px;
 }
 
-#mainCard{
-width:240px;
-transition:0.3s;
-}
+#mainCard{width:240px;}
 
 .sideCard{
 width:200px;
@@ -116,7 +112,7 @@ color:black;
 border-radius:18px;
 padding:16px;
 text-align:center;
-box-shadow:0 10px 25px rgba(0,0,0,0.2);
+box-shadow:0 10px 25px rgba(0,0,0,0.25);
 }
 
 .card img{
@@ -152,7 +148,7 @@ justify-items:center;
 }
 
 .coffeeCard{
-width:140px;
+width:150px;
 background:white;
 color:black;
 border-radius:12px;
@@ -203,51 +199,54 @@ font-size:14px;
 cursor:pointer;
 }
 
-/* BACKGROUND */
+/* DECOR */
 
-.bgShapes{
+.decor{
 position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-overflow:hidden;
+border-radius:50%;
 z-index:-1;
 }
 
-.shape{
-position:absolute;
-border-radius:50%;
-}
-
-.s1{
-width:280px;
-height:280px;
+.d1{
+width:220px;
+height:220px;
 background:#eaff00;
-top:-80px;
-left:-80px;
-filter:blur(80px);
-opacity:0.6;
+top:-60px;
+left:-60px;
+filter:blur(70px);
 }
 
-.s2{
-width:240px;
-height:240px;
-background:#d9ff00;
-bottom:-60px;
-right:-60px;
-filter:blur(80px);
-opacity:0.6;
-}
-
-.s3{
+.d2{
 width:180px;
 height:180px;
-background:#f3ff5c;
+background:#eaff00;
+bottom:-40px;
+right:-40px;
+filter:blur(60px);
+}
+
+.d3{
+width:16px;
+height:16px;
+background:#eaff00;
+top:25%;
+left:10%;
+}
+
+.d4{
+width:10px;
+height:10px;
+background:#eaff00;
+top:70%;
+left:20%;
+}
+
+.d5{
+width:14px;
+height:14px;
+background:#eaff00;
 top:40%;
-left:60%;
-filter:blur(80px);
-opacity:0.6;
+right:18%;
 }
 
 input,textarea,select{
@@ -258,16 +257,22 @@ border-radius:8px;
 border:1px solid #ddd;
 }
 
+.cta{
+font-size:22px;
+font-weight:bold;
+margin-top:25px;
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="bgShapes">
-<div class="shape s1"></div>
-<div class="shape s2"></div>
-<div class="shape s3"></div>
-</div>
+<div class="decor d1"></div>
+<div class="decor d2"></div>
+<div class="decor d3"></div>
+<div class="decor d4"></div>
+<div class="decor d5"></div>
 
 <div class="homeButton" onclick="openScreen('start')">🏠</div>
 <div class="profileButton" onclick="openScreen('profile')">👤</div>
@@ -276,23 +281,27 @@ border:1px solid #ddd;
 
 <div id="start" class="screen">
 
-<h1>Вайбмэтч 💜</h1>
+<h1>Вайбмэтч💜 Битрикс24</h1>
 
 <p class="subtitle">
-Находи коллег по вайбу
+
+Пространство для новых знакомств, людей и впечатлений!<br><br>
+
+🔥 Мэтч — ищи коллег по вайбу<br>
+☕ Random Coffee — приглашай на кофе случайных коллег<br>
+💌 Вайбы — кто написал и позвал на кофе?
+
 </p>
 
 <div class="center">
 
-<p>🔥 Мэтч — ищи коллег по вайбу</p>
-<p>☕ Random Coffee — приглашай на кофе</p>
-<p>💌 Вайбы — смотри кто написал</p>
-
-<br>
-
 <button class="primary" onclick="startApp()">
 Начать
 </button>
+
+<div class="cta">
+Давай знакомиться!
+</div>
 
 </div>
 
@@ -303,7 +312,6 @@ border:1px solid #ddd;
 <div id="match" class="screen">
 
 <h1>Мэтч режим</h1>
-<p class="subtitle">Листай коллег</p>
 
 <div class="matchContainer">
 
@@ -365,16 +373,6 @@ border:1px solid #ddd;
 <div><b>Игорь</b><br>☕ Позвал тебя на кофе</div>
 </div>
 
-<div class="vibeCard">
-<img src="https://randomuser.me/api/portraits/women/68.jpg">
-<div><b>Мария</b><br>💜 Поставила тебе вайб</div>
-</div>
-
-<div class="vibeCard">
-<img src="https://randomuser.me/api/portraits/men/51.jpg">
-<div><b>Денис</b><br>☕ Приглашает на кофе</div>
-</div>
-
 </div>
 
 <!-- PROFILE -->
@@ -393,8 +391,6 @@ border:1px solid #ddd;
 <textarea placeholder="О себе"></textarea>
 
 <input type="file">
-
-<p>У тебя уже <b>25 вайбов</b></p>
 
 <button class="primary">
 Сохранить
@@ -435,21 +431,16 @@ let people=[
 ]
 
 let index=0
+let vibeClicks=0
 
 function openScreen(id){
-
 document.querySelectorAll(".screen").forEach(s=>s.style.display="none")
-
 document.getElementById(id).style.display="block"
-
 }
 
 function startApp(){
-
 openScreen("match")
-
 renderCard()
-
 }
 
 function cardHTML(p,active){
@@ -489,39 +480,52 @@ ${active ? `
 function renderCard(){
 
 let current=people[index%people.length]
-
 let prev=people[(index-1+people.length)%people.length]
-
 let next=people[(index+1)%people.length]
 
 document.getElementById("mainCard").innerHTML=cardHTML(current,true)
-
 document.getElementById("prevCard").innerHTML=cardHTML(prev,false)
-
 document.getElementById("nextCard").innerHTML=cardHTML(next,false)
 
 }
 
 function skip(){
-
 index++
-
 renderCard()
-
 }
 
 function vibe(){
 
-index++
+vibeClicks++
 
+if(vibeClicks%3==0){
+
+document.getElementById("mainCard").innerHTML=`
+
+<div class="card">
+
+<h2>💜 У вас Вайбмэтч!</h2>
+
+<p>Похоже вы на одной волне</p>
+
+<button class="primary">Написать</button>
+
+</div>
+
+`
+
+}else{
+
+index++
 renderCard()
+
+}
 
 }
 
 function generateCoffee(){
 
 let grid=document.getElementById("coffeePeople")
-
 grid.innerHTML=""
 
 for(let i=0;i<4;i++){
@@ -536,7 +540,7 @@ grid.innerHTML+=`
 
 <b>${p.name}</b>
 
-<p>${p.dept}</p>
+<p>${p.about}</p>
 
 <button class="primary">Позвать</button>
 
@@ -552,14 +556,26 @@ function blindChoice(){
 
 let p=people[Math.floor(Math.random()*people.length)]
 
-alert("Сегодня кофе с "+p.name)
+document.getElementById("coffeePeople").innerHTML=`
+
+<div class="coffeeCard">
+
+<img src="${p.photo}">
+
+<b>${p.name}</b>
+
+<p>${p.about}</p>
+
+<button class="primary">Позвать!</button>
+
+</div>
+
+`
 
 }
 
 window.onload=function(){
-
 openScreen("start")
-
 }
 
 </script>
