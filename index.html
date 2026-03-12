@@ -22,13 +22,12 @@ box-sizing:border-box;
 
 h1{
 text-align:center;
-margin-bottom:10px;
 }
 
 .subtitle{
 text-align:center;
-margin-bottom:30px;
 opacity:0.9;
+margin-bottom:30px;
 }
 
 button{
@@ -52,6 +51,23 @@ color:black;
 
 .center{
 text-align:center;
+}
+
+.homeButton{
+position:fixed;
+top:16px;
+left:16px;
+width:42px;
+height:42px;
+border-radius:50%;
+background:#eaff00;
+color:black;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:20px;
+cursor:pointer;
+z-index:1000;
 }
 
 .profileButton{
@@ -131,6 +147,23 @@ width:100%;
 border-radius:8px;
 }
 
+.vibeCard{
+display:flex;
+gap:12px;
+background:white;
+color:black;
+border-radius:12px;
+padding:10px;
+margin-bottom:12px;
+align-items:center;
+}
+
+.vibeCard img{
+width:50px;
+height:50px;
+border-radius:50%;
+}
+
 .bottomNav{
 position:fixed;
 bottom:0;
@@ -170,7 +203,7 @@ background:#eaff00;
 top:-80px;
 left:-80px;
 filter:blur(80px);
-opacity:0.5;
+opacity:0.6;
 }
 
 .s2{
@@ -180,7 +213,7 @@ background:#d9ff00;
 bottom:-60px;
 right:-60px;
 filter:blur(80px);
-opacity:0.5;
+opacity:0.6;
 }
 
 .s3{
@@ -190,7 +223,7 @@ background:#f3ff5c;
 top:40%;
 left:60%;
 filter:blur(80px);
-opacity:0.5;
+opacity:0.6;
 }
 
 .s4{
@@ -230,6 +263,7 @@ border:1px solid #ddd;
 <div class="shape s5"></div>
 </div>
 
+<div class="homeButton" onclick="openScreen('start')">🏠</div>
 <div class="profileButton" onclick="openScreen('profile')">👤</div>
 
 <!-- СТАРТ -->
@@ -309,20 +343,38 @@ border:1px solid #ddd;
 
 <div id="vibes" class="screen">
 
-<h1>Вайбы</h1>
+<h1>Вайбы коллег</h1>
 
-<div class="card">
-💜 У вас вайбмэтч с Анной
-<br><br>
-<button class="primary">Написать</button>
+<div class="vibeCard">
+<img src="https://randomuser.me/api/portraits/women/44.jpg">
+<div>
+<b>Анна</b><br>
+💜 У вас вайбмэтч!
+</div>
 </div>
 
-<br>
+<div class="vibeCard">
+<img src="https://randomuser.me/api/portraits/men/32.jpg">
+<div>
+<b>Игорь</b><br>
+☕ Позвал тебя на кофе
+</div>
+</div>
 
-<div class="card">
-☕ Максим позвал тебя на кофе
-<br><br>
-<button class="primary">Ответить</button>
+<div class="vibeCard">
+<img src="https://randomuser.me/api/portraits/women/68.jpg">
+<div>
+<b>Мария</b><br>
+💜 Поставила тебе вайб
+</div>
+</div>
+
+<div class="vibeCard">
+<img src="https://randomuser.me/api/portraits/men/51.jpg">
+<div>
+<b>Денис</b><br>
+☕ Приглашает на кофе
+</div>
 </div>
 
 </div>
@@ -358,11 +410,7 @@ border:1px solid #ddd;
 
 <div class="bottomNav">
 
-<div class="navItem" onclick="openScreen('start')">
-🏠<br>Старт
-</div>
-
-<div class="navItem" onclick="openScreen('match')">
+<div class="navItem" onclick="openScreen('match');renderCard();">
 🔥<br>Мэтч
 </div>
 
@@ -380,53 +428,11 @@ border:1px solid #ddd;
 
 let people=[
 
-{
-name:"Анна",
-city:"Москва",
-dept:"Маркетинг РФ",
-about:"Люблю бег и новые знакомства",
-photo:"https://randomuser.me/api/portraits/women/44.jpg"
-},
-
-{
-name:"Игорь",
-city:"Питер",
-dept:"Разработка",
-about:"Пишу код и играю в настолки",
-photo:"https://randomuser.me/api/portraits/men/32.jpg"
-},
-
-{
-name:"Мария",
-city:"Калининград",
-dept:"HR",
-about:"Обожаю кофе и путешествия",
-photo:"https://randomuser.me/api/portraits/women/68.jpg"
-},
-
-{
-name:"Денис",
-city:"Москва",
-dept:"Продажи",
-about:"Футбол и переговоры",
-photo:"https://randomuser.me/api/portraits/men/51.jpg"
-},
-
-{
-name:"Ольга",
-city:"Владимир",
-dept:"Продукт",
-about:"Люблю UX и книги",
-photo:"https://randomuser.me/api/portraits/women/12.jpg"
-},
-
-{
-name:"Алексей",
-city:"Москва",
-dept:"Enterprise",
-about:"Горы и стартапы",
-photo:"https://randomuser.me/api/portraits/men/41.jpg"
-}
+{name:"Анна",city:"Москва",dept:"Маркетинг РФ",about:"Люблю бег",photo:"https://randomuser.me/api/portraits/women/44.jpg"},
+{name:"Игорь",city:"Питер",dept:"Разработка",about:"Пишу код",photo:"https://randomuser.me/api/portraits/men/32.jpg"},
+{name:"Мария",city:"Калининград",dept:"HR",about:"Обожаю кофе",photo:"https://randomuser.me/api/portraits/women/68.jpg"},
+{name:"Денис",city:"Москва",dept:"Продажи",about:"Футбол",photo:"https://randomuser.me/api/portraits/men/51.jpg"},
+{name:"Ольга",city:"Владимир",dept:"Продукт",about:"Люблю UX",photo:"https://randomuser.me/api/portraits/women/12.jpg"}
 
 ]
 
@@ -471,7 +477,6 @@ document.getElementById("card").innerHTML=`
 </div>
 
 `
-
 }
 
 function skip(){
@@ -512,13 +517,9 @@ function generateCoffee(){
 let grid=document.getElementById("coffeePeople")
 grid.innerHTML=""
 
-let city=document.getElementById("cityFilter").value
-
-let filtered=people.filter(p=>city==="all"||p.city===city)
-
 for(let i=0;i<4;i++){
 
-let p=filtered[Math.floor(Math.random()*filtered.length)]
+let p=people[Math.floor(Math.random()*people.length)]
 
 grid.innerHTML+=`
 
