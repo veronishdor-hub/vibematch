@@ -2,61 +2,88 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Вайбмэтч</title>
+<title>VibeMatch</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
 
 body{
-font-family:Arial;
-background:#f5f6fa;
+margin:0;
+font-family:Montserrat;
+background:linear-gradient(135deg,#9B51E0,#2FC7F7);
+color:#fff;
+height:100vh;
 display:flex;
-justify-content:center;
-margin-top:40px;
+flex-direction:column;
 }
 
-.container{
-width:360px;
+.screen{
+flex:1;
+display:none;
+padding:20px;
+overflow:auto;
 }
 
-.header{
-background:#6f3ff5;
-color:white;
-padding:16px;
-border-radius:12px;
-margin-bottom:20px;
+.active{
+display:block;
 }
 
-.title{
-font-size:20px;
-font-weight:bold;
+h1{
+font-size:32px;
+margin-bottom:10px;
 }
 
 .subtitle{
-font-size:13px;
 opacity:0.9;
-margin-top:4px;
+margin-bottom:40px;
+}
+
+button{
+border:none;
+padding:12px 20px;
+border-radius:12px;
+font-size:16px;
+cursor:pointer;
+}
+
+.primary{
+background:#fff;
+color:#6C4DF6;
+font-weight:600;
+}
+
+.secondary{
+background:rgba(255,255,255,0.2);
+color:#fff;
 }
 
 .card{
-background:white;
+background:#fff;
+color:#333;
+border-radius:20px;
 padding:20px;
-border-radius:16px;
-box-shadow:0 5px 20px rgba(0,0,0,0.08);
-margin-bottom:20px;
+text-align:center;
+max-width:320px;
+margin:auto;
+box-shadow:0 10px 25px rgba(0,0,0,0.2);
+animation:fadeIn 0.4s;
 }
 
-.name{
-font-size:22px;
-font-weight:bold;
+.card img{
+width:120px;
+height:120px;
+border-radius:50%;
+object-fit:cover;
+margin-bottom:10px;
 }
 
-.meta{
-color:#666;
-margin-top:5px;
+.card h3{
+margin:10px 0 5px 0;
 }
 
-.desc{
-margin-top:15px;
+.card p{
+margin:4px 0;
 }
 
 .buttons{
@@ -65,73 +92,41 @@ justify-content:space-between;
 margin-top:20px;
 }
 
-button{
-border:none;
-padding:10px 14px;
-border-radius:10px;
-cursor:pointer;
-font-size:14px;
-}
-
 .like{
-background:#ff4d6d;
-color:white;
+background:#9B51E0;
+color:#fff;
 }
 
 .skip{
-background:#e0e0e0;
+background:#eee;
 }
 
-.coffee{
-background:#6f3ff5;
-color:white;
-width:100%;
-margin-bottom:15px;
+.nav{
+height:70px;
+background:#fff;
+display:flex;
+justify-content:space-around;
+align-items:center;
+color:#444;
 }
 
-.chat{
-background:#00a884;
-color:white;
+.nav div{
+cursor:pointer;
+text-align:center;
+font-size:14px;
+}
+
+input,textarea{
 width:100%;
+padding:10px;
 margin-top:10px;
-display:none;
-}
-
-select{
-margin-bottom:10px;
-padding:8px;
 border-radius:8px;
+border:none;
 }
 
-.stats{
-margin-bottom:10px;
-color:#555;
-}
-
-.grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:10px;
-}
-
-.coffeeCard{
-background:white;
-padding:12px;
-border-radius:12px;
-box-shadow:0 3px 10px rgba(0,0,0,0.08);
-}
-
-.coffeeCard button{
-margin-top:8px;
-background:#6f3ff5;
-color:white;
-width:100%;
-}
-
-.back{
-margin-top:15px;
-width:100%;
-background:#ddd;
+@keyframes fadeIn{
+from{opacity:0;transform:translateY(10px)}
+to{opacity:1;transform:translateY(0)}
 }
 
 </style>
@@ -139,183 +134,258 @@ background:#ddd;
 
 <body>
 
-<div class="container">
+<!-- START SCREEN -->
 
-<div class="header">
-<div class="title">💜 Вайбмэтч — давай знакомиться? :)</div>
-<div class="subtitle">для новых встреч, людей и впечатлений</div>
+<div id="start" class="screen active">
+
+<h1>💜 Вайбмэтч</h1>
+
+<div class="subtitle">
+Давай знакомиться? :)<br><br>
+Пространство для новых встреч, людей и впечатлений
 </div>
 
-<div id="mainMode">
+<button class="primary" onclick="startApp()">Начать</button>
 
-<div class="stats" id="stats">
-Вайбов поставлено: 0
 </div>
 
-<select onchange="filterCity(this.value)">
-<option value="all">Все города</option>
-<option value="Москва">Москва</option>
-<option value="Питер">Питер</option>
-<option value="Калининград">Калининград</option>
-<option value="Владимир">Владимир</option>
-</select>
 
-<button class="coffee" onclick="randomCoffeeMode()">
-☕ рандом-кофе
-</button>
+<!-- MATCH SCREEN -->
 
-<div class="card">
+<div id="match" class="screen">
 
-<div class="name" id="name"></div>
-<div class="meta" id="meta"></div>
-<div class="desc" id="desc"></div>
+<div id="cardContainer"></div>
 
 <div class="buttons">
-<button class="skip" onclick="nextPerson()">дальше</button>
-<button class="like" onclick="like()">❤️ вайб</button>
-</div>
-
-<button class="chat" id="chatButton">
-💬 написать
-</button>
-
+<button class="skip" onclick="nextCard()">Пропустить</button>
+<button class="like" onclick="nextCard()">💜 Вайб!</button>
 </div>
 
 </div>
 
 
-<div id="coffeeMode" style="display:none">
+<!-- RANDOM COFFEE -->
 
-<div class="card">
-<b>Выберите коллегу для рандом-кофе ☕</b>
+<div id="coffee" class="screen">
 
-<div class="grid" id="coffeeGrid"></div>
+<h2>☕ Random Coffee</h2>
 
-<button class="back" onclick="exitCoffeeMode()">← вернуться к поиску</button>
+<p>Найди человека для случайного кофе</p>
+
+<select id="cityFilter">
+
+<option>Москва</option>
+<option>Питер</option>
+<option>Калининград</option>
+<option>Владимир</option>
+
+</select>
+
+<br><br>
+
+<button class="primary" onclick="randomFour()">Показать 4 человека</button>
+
+<br><br>
+
+<button class="secondary" onclick="randomBlind()">Выбрать вслепую ✨</button>
+
+<div id="coffeeResults"></div>
 
 </div>
 
-</div>
+
+<!-- PROFILE -->
+
+<div id="profile" class="screen">
+
+<h2>👤 Мой профиль</h2>
+
+<input placeholder="Имя">
+
+<input placeholder="Город">
+
+<textarea placeholder="Напиши немного о себе"></textarea>
+
+<br><br>
+
+<button class="primary">Сохранить</button>
 
 </div>
+
+
+<!-- NAVIGATION -->
+
+<div class="nav">
+
+<div onclick="openScreen('match')">🔥<br>Мэтч</div>
+
+<div onclick="openScreen('coffee')">☕<br>Coffee</div>
+
+<div onclick="openScreen('profile')">👤<br>Профиль</div>
+
+</div>
+
 
 <script>
 
-let people = [
+const people = [
 
-{name:"Анна Петрова",city:"Москва",dept:"Маркетинг",desc:"Люблю бегать по утрам и искать новые кофейни."},
+{
+name:"Анна Петрова",
+dept:"Маркетинг РФ",
+city:"Москва",
+photo:"https://randomuser.me/api/portraits/women/1.jpg",
+desc:"Люблю горы и маркетинговые эксперименты"
+},
 
-{name:"Игорь Сидоров",city:"Питер",dept:"Разработка",desc:"Фанат настолок, геймдева и технологий."},
+{
+name:"Игорь Смирнов",
+dept:"Разработка",
+city:"Питер",
+photo:"https://randomuser.me/api/portraits/men/2.jpg",
+desc:"Код, кофе и настольные игры"
+},
 
-{name:"Мария Иванова",city:"Калининград",dept:"HR",desc:"Люблю общаться с людьми и путешествовать."},
+{
+name:"Мария Иванова",
+dept:"HR",
+city:"Калининград",
+photo:"https://randomuser.me/api/portraits/women/3.jpg",
+desc:"Обожаю людей и путешествия"
+},
 
-{name:"Алексей Ковалев",city:"Владимир",dept:"Продажи",desc:"Люблю спорт, переговоры и хороший кофе."},
+{
+name:"Дмитрий Орлов",
+dept:"Продажи",
+city:"Москва",
+photo:"https://randomuser.me/api/portraits/men/4.jpg",
+desc:"Люблю сложные переговоры"
+},
 
-{name:"Елена Смирнова",city:"Москва",dept:"Дизайн",desc:"Люблю искусство, кино и прогулки."},
+{
+name:"Елена Соколова",
+dept:"Продукт",
+city:"Владимир",
+photo:"https://randomuser.me/api/portraits/women/5.jpg",
+desc:"Делаю продукты лучше каждый день"
+},
 
-{name:"Дмитрий Орлов",city:"Питер",dept:"Поддержка",desc:"Люблю музыку и путешествия."}
+{
+name:"Алексей Кузнецов",
+dept:"Маркетинг МИР",
+city:"Питер",
+photo:"https://randomuser.me/api/portraits/men/6.jpg",
+desc:"Маркетинг без границ"
+},
+
+{
+name:"Ольга Морозова",
+dept:"Энтерпрайз",
+city:"Москва",
+photo:"https://randomuser.me/api/portraits/women/7.jpg",
+desc:"Люблю сложные задачи"
+},
+
+{
+name:"Сергей Волков",
+dept:"Разработка",
+city:"Калининград",
+photo:"https://randomuser.me/api/portraits/men/8.jpg",
+desc:"Backend магия"
+},
+
+{
+name:"Наталья Белова",
+dept:"HR",
+city:"Владимир",
+photo:"https://randomuser.me/api/portraits/women/9.jpg",
+desc:"Люблю помогать людям расти"
+},
+
+{
+name:"Максим Федоров",
+dept:"Продажи",
+city:"Москва",
+photo:"https://randomuser.me/api/portraits/men/10.jpg",
+desc:"Переговоры и спорт"
+}
 
 ]
 
-let filteredPeople = people
-let currentIndex = 0
-let vibes = 0
+let index=0
 
-function showPerson(){
+function startApp(){
 
-let person = filteredPeople[currentIndex]
-
-document.getElementById("name").innerText = person.name
-document.getElementById("meta").innerText = person.dept + " • " + person.city
-document.getElementById("desc").innerText = person.desc
-
-document.getElementById("chatButton").style.display="none"
+openScreen("match")
+renderCard()
 
 }
 
-function nextPerson(){
+function openScreen(id){
 
-currentIndex++
+document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"))
 
-if(currentIndex >= filteredPeople.length){
-currentIndex = 0
-}
-
-showPerson()
+document.getElementById(id).classList.add("active")
 
 }
 
-function like(){
+function renderCard(){
 
-vibes++
+const p=people[index]
 
-document.getElementById("stats").innerText =
-"Вайбов поставлено: " + vibes
+document.getElementById("cardContainer").innerHTML=`
 
-document.getElementById("chatButton").style.display="block"
+<div class="card">
+
+<img src="${p.photo}">
+
+<h3>${p.name}</h3>
+
+<p>${p.dept}</p>
+
+<p>${p.city}</p>
+
+<p>${p.desc}</p>
+
+</div>
+
+`
 
 }
 
-function filterCity(city){
+function nextCard(){
 
-if(city==="all"){
-filteredPeople = people
-}else{
-filteredPeople = people.filter(p => p.city === city)
-}
+index++
 
-currentIndex = 0
-showPerson()
+if(index>=people.length) index=0
+
+renderCard()
 
 }
 
-function randomCoffeeMode(){
-
-document.getElementById("mainMode").style.display="none"
-document.getElementById("coffeeMode").style.display="block"
-
-let grid = document.getElementById("coffeeGrid")
-grid.innerHTML=""
+function randomFour(){
 
 let shuffled=[...people].sort(()=>0.5-Math.random()).slice(0,4)
 
+let html=""
+
 shuffled.forEach(p=>{
 
-let div=document.createElement("div")
-div.className="coffeeCard"
-
-div.innerHTML=`
-<b>${p.name}</b><br>
-${p.dept}<br>
-${p.city}
-<button onclick="invite('${p.name}')">пригласить</button>
-`
-
-grid.appendChild(div)
+html+=`<p>${p.name} — ${p.city}</p>`
 
 })
 
-}
-
-function exitCoffeeMode(){
-
-document.getElementById("coffeeMode").style.display="none"
-document.getElementById("mainMode").style.display="block"
+document.getElementById("coffeeResults").innerHTML=html
 
 }
 
-function invite(name){
+function randomBlind(){
 
-alert(
-"Привет! 👋\n\n"+
-"Мы совпали в Вайбмэтче.\n"+
-"Пойдём на рандом-кофе? ☕\n\n"+
-name
-)
+let p=people[Math.floor(Math.random()*people.length)]
+
+document.getElementById("coffeeResults").innerHTML=`<p>✨ Твой кофе партнёр: <b>${p.name}</b></p>`
 
 }
-
-showPerson()
 
 </script>
 
