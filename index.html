@@ -9,43 +9,49 @@
 body{
 margin:0;
 font-family:Arial;
-background:linear-gradient(135deg,#7c3aed,#a855f7);
+background:linear-gradient(135deg,#6d28d9,#7c3aed);
 color:white;
 }
 
 .screen{
 display:none;
-padding:20px;
+padding:30px;
 min-height:100vh;
 box-sizing:border-box;
 }
 
 h1{
 text-align:center;
+margin-bottom:10px;
 }
 
 .subtitle{
 text-align:center;
-opacity:0.9;
 margin-bottom:30px;
+opacity:0.9;
 }
 
 button{
-padding:12px 18px;
+padding:10px 16px;
 border:none;
 border-radius:10px;
-font-size:16px;
+font-size:15px;
 cursor:pointer;
 }
 
 .primary{
-background:#fff;
-color:#7c3aed;
+background:#eaff00;
+color:black;
+font-weight:bold;
 }
 
 .secondary{
-background:rgba(255,255,255,0.2);
-color:white;
+background:white;
+color:black;
+}
+
+.center{
+text-align:center;
 }
 
 .profileButton{
@@ -55,8 +61,8 @@ right:16px;
 width:42px;
 height:42px;
 border-radius:50%;
-background:white;
-color:#7c3aed;
+background:#eaff00;
+color:black;
 display:flex;
 align-items:center;
 justify-content:center;
@@ -68,16 +74,14 @@ cursor:pointer;
 display:flex;
 justify-content:center;
 align-items:center;
-min-height:60vh;
 }
 
 .card{
-width:320px;
-max-width:90%;
+width:260px;
 background:white;
 color:black;
-border-radius:20px;
-padding:20px;
+border-radius:18px;
+padding:16px;
 text-align:center;
 box-shadow:0 10px 25px rgba(0,0,0,0.2);
 }
@@ -85,27 +89,35 @@ box-shadow:0 10px 25px rgba(0,0,0,0.2);
 .card img{
 width:100%;
 border-radius:12px;
+margin-bottom:8px;
 }
 
 .actions{
 display:flex;
 justify-content:space-between;
-margin-top:15px;
+margin-top:10px;
 }
 
 .coffeeGrid{
 display:grid;
 grid-template-columns:1fr 1fr;
-gap:16px;
+gap:12px;
 margin-top:20px;
+justify-items:center;
 }
 
 .coffeeCard{
+width:140px;
 background:white;
 color:black;
-border-radius:14px;
-padding:12px;
+border-radius:12px;
+padding:10px;
 text-align:center;
+}
+
+.coffeeCard img{
+width:100%;
+border-radius:8px;
 }
 
 .bottomNav{
@@ -139,31 +151,39 @@ z-index:-1;
 position:absolute;
 border-radius:50%;
 filter:blur(60px);
-opacity:0.4;
+opacity:0.5;
 }
 
 .s1{
-width:300px;
-height:300px;
-background:#c084fc;
-top:-100px;
-left:-100px;
+width:280px;
+height:280px;
+background:#eaff00;
+top:-80px;
+left:-80px;
 }
 
 .s2{
-width:260px;
-height:260px;
-background:#9333ea;
-bottom:-80px;
-right:-80px;
+width:240px;
+height:240px;
+background:#d9ff00;
+bottom:-60px;
+right:-60px;
 }
 
 .s3{
-width:200px;
-height:200px;
-background:#a855f7;
+width:180px;
+height:180px;
+background:#f3ff5c;
 top:40%;
 left:60%;
+}
+
+input,textarea,select{
+width:100%;
+padding:8px;
+margin-bottom:10px;
+border-radius:8px;
+border:1px solid #ddd;
 }
 
 </style>
@@ -180,41 +200,39 @@ left:60%;
 <div class="profileButton" onclick="openScreen('profile')">👤</div>
 
 <!-- START -->
+
 <div id="start" class="screen">
 
-<h1>💜 Вайбмэтч Битрикс24</h1>
+<h1>Вайбмэтч💜 Битрикс24</h1>
 
 <p class="subtitle">
-Пространство для новых знакомств, людей и впечатлений
+Пространство для новых знакомств, людей и впечатлений!
 </p>
 
-<div style="text-align:center">
+<div class="center">
 
-<p>
-🔥 Мэтч — ищи коллег по вайбу  
-</p>
+<p>🔥 Мэтч — ищи коллег по вайбу</p>
+<p>☕ Random Coffee — приглашай на кофе случайных коллег</p>
+<p>💌 Вайбы — кто написал и позвал на кофе?</p>
 
-<p>
-☕ Random Coffee — случайное знакомство
-</p>
+<br>
 
-<p>
-💌 Вайбы — кто написал тебе
-</p>
+<button class="primary" onclick="startApp()">Начать</button>
 
-<button class="primary" onclick="startApp()">
-Начать
-</button>
+<br><br>
+
+<h2>Давай знакомиться!</h2>
 
 </div>
 
 </div>
 
 <!-- MATCH -->
+
 <div id="match" class="screen">
 
-<h1>Мэтч режим!</h1>
-<p class="subtitle">Тут ты можешь искать коллег по вайбу</p>
+<h1>Мэтч режим</h1>
+<p class="subtitle">Ищи коллег по вайбу</p>
 
 <div class="matchContainer">
 <div id="card"></div>
@@ -223,26 +241,47 @@ left:60%;
 </div>
 
 <!-- COFFEE -->
+
 <div id="coffee" class="screen">
 
 <h1>Random Coffee</h1>
-<p class="subtitle">Пригласи случайного коллегу на кофе</p>
+
+<div class="center">
+
+<select id="cityFilter">
+<option value="all">Все города</option>
+<option>Москва</option>
+<option>Питер</option>
+<option>Калининград</option>
+<option>Владимир</option>
+</select>
+
+<br>
 
 <button class="primary" onclick="generateCoffee()">
-Найти коллег
+Пригласить!
 </button>
+
+<br><br>
+
+<button onclick="blindChoice()">
+Выбрать вслепую
+</button>
+
+</div>
 
 <div id="coffeePeople" class="coffeeGrid"></div>
 
 </div>
 
 <!-- VIBES -->
+
 <div id="vibes" class="screen">
 
 <h1>Вайбы</h1>
 
 <div class="card">
-💜 У вас вайбмэтч с Анной  
+💜 У вас вайбмэтч с Анной
 <br><br>
 <button class="primary">Написать</button>
 </div>
@@ -250,7 +289,7 @@ left:60%;
 <br>
 
 <div class="card">
-☕ Максим позвал тебя на кофе  
+☕ Максим позвал тебя на кофе
 <br><br>
 <button class="primary">Ответить</button>
 </div>
@@ -258,25 +297,32 @@ left:60%;
 </div>
 
 <!-- PROFILE -->
+
 <div id="profile" class="screen">
 
 <h1>Мой профиль</h1>
 
+<div class="matchContainer">
+
 <div class="card">
 
-<img src="https://i.pravatar.cc/300">
+<input placeholder="Имя">
 
-<h3>Твой профиль</h3>
+<input placeholder="Фамилия">
 
-<p>
-У тебя уже <b>25 вайбов!</b>
-</p>
+<input placeholder="Отдел">
 
-<textarea placeholder="Расскажи о себе"></textarea>
+<input placeholder="Город">
 
-<br><br>
+<textarea placeholder="О себе"></textarea>
+
+<input type="file">
+
+<p>У тебя уже <b>25 вайбов!</b></p>
 
 <button class="primary">Сохранить</button>
+
+</div>
 
 </div>
 
@@ -301,41 +347,11 @@ left:60%;
 <script>
 
 let people=[
-{
-name:"Анна",
-city:"Москва",
-dept:"Маркетинг РФ",
-about:"Люблю бег и путешествия",
-photo:"https://i.pravatar.cc/300?img=1"
-},
-{
-name:"Игорь",
-city:"Питер",
-dept:"Разработка",
-about:"Пишу код и играю в настолки",
-photo:"https://i.pravatar.cc/300?img=2"
-},
-{
-name:"Мария",
-city:"Калининград",
-dept:"HR",
-about:"Обожаю кофе",
-photo:"https://i.pravatar.cc/300?img=3"
-},
-{
-name:"Денис",
-city:"Москва",
-dept:"Продажи",
-about:"Фанат футбола",
-photo:"https://i.pravatar.cc/300?img=4"
-},
-{
-name:"Ольга",
-city:"Владимир",
-dept:"Продукт",
-about:"Люблю UX и книги",
-photo:"https://i.pravatar.cc/300?img=5"
-}
+{name:"Анна",city:"Москва",dept:"Маркетинг РФ",about:"Люблю бег",photo:"https://i.pravatar.cc/300?img=1"},
+{name:"Игорь",city:"Питер",dept:"Разработка",about:"Пишу код",photo:"https://i.pravatar.cc/300?img=2"},
+{name:"Мария",city:"Калининград",dept:"HR",about:"Обожаю кофе",photo:"https://i.pravatar.cc/300?img=3"},
+{name:"Денис",city:"Москва",dept:"Продажи",about:"Футбол",photo:"https://i.pravatar.cc/300?img=4"},
+{name:"Ольга",city:"Владимир",dept:"Продукт",about:"Люблю UX",photo:"https://i.pravatar.cc/300?img=5"}
 ]
 
 let index=0
@@ -377,7 +393,6 @@ document.getElementById("card").innerHTML=`
 </div>
 
 `
-
 }
 
 function skip(){
@@ -416,30 +431,41 @@ renderCard()
 function generateCoffee(){
 
 let grid=document.getElementById("coffeePeople")
-
 grid.innerHTML=""
+
+let city=document.getElementById("cityFilter").value
+
+let filtered=people.filter(p=>city==="all"||p.city===city)
 
 for(let i=0;i<4;i++){
 
-let p=people[Math.floor(Math.random()*people.length)]
+let p=filtered[Math.floor(Math.random()*filtered.length)]
 
 grid.innerHTML+=`
 
 <div class="coffeeCard">
 
-<img src="${p.photo}" width="100%">
+<img src="${p.photo}">
 
 <b>${p.name}</b>
 
 <p>${p.dept}</p>
 
-<button class="primary">Позвать на кофе</button>
+<button class="primary">Позвать</button>
 
 </div>
 
 `
 
 }
+
+}
+
+function blindChoice(){
+
+let p=people[Math.floor(Math.random()*people.length)]
+
+alert("Твой кофе сегодня с "+p.name)
 
 }
 
