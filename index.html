@@ -3,308 +3,61 @@
 <head>
 <meta charset="UTF-8">
 <title>Вайбмэтч</title>
-
 <style>
 body{
-margin:0;
-font-family:Arial;
-background:linear-gradient(135deg,#6d28d9,#7c3aed);
-color:white;
-overflow-x:hidden;
+  margin:0;
+  font-family:Arial;
+  background:linear-gradient(135deg,#6d28d9,#7c3aed);
+  color:white;
+  overflow-x:hidden;
 }
-
 .screen{
-display:none;
-padding:30px;
-min-height:100vh;
-box-sizing:border-box;
-display:flex;
-flex-direction:column;
-justify-content:flex-start;
-align-items:center;
+  display:none;
+  padding:30px;
+  min-height:100vh;
+  box-sizing:border-box;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+  align-items:center;
 }
-
 h1{text-align:center;}
-
 #start h1{font-size:64px;}
-.subtitle{
-text-align:center;
-margin-bottom:30px;
-opacity:0.95;
-font-size:20px;
-line-height:1.6;
-}
-
-.screenHeader{
-text-align:center;
-margin-bottom:10px;
-opacity:0.95;
-font-size:20px;
-}
-
-button{
-padding:10px 16px;
-border:none;
-border-radius:10px;
-font-size:15px;
-cursor:pointer;
-}
-
-.primary{
-background:#eaff00;
-color:black;
-font-weight:bold;
-}
-
-.secondary{
-background:white;
-color:black;
-}
-
-.bigButton{
-font-size:20px;
-padding:16px 28px;
-border-radius:14px;
-}
-
+.subtitle{ text-align:center; margin-bottom:30px; opacity:0.95; font-size:20px; line-height:1.6; }
+.screenHeader{ text-align:center; margin-bottom:10px; opacity:0.95; font-size:20px; }
+button{ padding:10px 16px; border:none; border-radius:10px; font-size:15px; cursor:pointer; }
+.primary{ background:#eaff00; color:black; font-weight:bold; }
+.secondary{ background:white; color:black; }
+.bigButton{ font-size:20px; padding:16px 28px; border-radius:14px; }
 .center{text-align:center}
-
-/* TOP BUTTONS */
-
-.homeButton{
-position:fixed;
-top:16px;
-left:16px;
-width:42px;
-height:42px;
-border-radius:50%;
-background:#eaff00;
-color:black;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:20px;
-cursor:pointer;
-z-index:1000;
-}
-
-.profileButton{
-position:fixed;
-top:16px;
-right:16px;
-width:42px;
-height:42px;
-border-radius:50%;
-background:#eaff00;
-color:black;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:20px;
-cursor:pointer;
-z-index:1000;
-}
-
-/* MATCH */
-
-.matchContainer{
-display:flex;
-justify-content:center;
-align-items:center;
-gap:16px;
-margin-top:20px;
-}
-
+.homeButton{ position:fixed; top:16px; left:16px; width:42px; height:42px; border-radius:50%; background:#eaff00; color:black; display:flex; align-items:center; justify-content:center; font-size:20px; cursor:pointer; z-index:1000; }
+.profileButton{ position:fixed; top:16px; right:16px; width:42px; height:42px; border-radius:50%; background:#eaff00; color:black; display:flex; align-items:center; justify-content:center; font-size:20px; cursor:pointer; z-index:1000; }
+.matchContainer{ display:flex; justify-content:center; align-items:center; gap:16px; margin-top:20px; }
 #mainCard{width:240px;}
-
-.sideCard{
-width:200px;
-opacity:0.5;
-filter:blur(3px);
-transform:scale(0.9);
-}
-
-.card{
-background:white;
-color:black;
-border-radius:18px;
-padding:16px;
-text-align:center;
-box-shadow:0 10px 25px rgba(0,0,0,0.25);
-}
-
-.card img{
-width:100%;
-border-radius:12px;
-margin-bottom:8px;
-}
-
-.cityTag{
-display:inline-block;
-background:#eaff00;
-color:black;
-padding:4px 8px;
-border-radius:8px;
-font-size:12px;
-margin-bottom:6px;
-}
-
-.actions{
-display:flex;
-justify-content:space-between;
-margin-top:10px;
-}
-
-/* COFFEE */
-
-.coffeeControls{
-display:flex;
-gap:10px;
-margin-bottom:20px;
-justify-content:center;
-align-items:center;
-}
-
-.coffeeControls select,
-.coffeeControls button{
-padding:10px;
-font-size:16px;
-border-radius:12px;
-}
-
-.coffeeGrid{
-display:grid;
-grid-template-columns:repeat(3,180px);
-gap:18px;
-justify-content:center;
-}
-
-.coffeeCard{
-width:150px;
-background:white;
-color:black;
-border-radius:12px;
-padding:10px;
-text-align:center;
-transition:0.3s;
-}
-
-.coffeeCard img{
-width:100%;
-border-radius:8px;
-}
-
-.invited{
-background:#eaff00;
-transform:scale(1.05);
-}
-
-/* VIBES */
-
-.vibeCard{
-display:flex;
-gap:12px;
-background:white;
-color:black;
-border-radius:12px;
-padding:10px;
-margin-bottom:12px;
-align-items:center;
-justify-content:space-between;
-}
-
-.vibeCard img{
-width:50px;
-height:50px;
-border-radius:50%;
-}
-
-/* NAV */
-
-.bottomNav{
-position:fixed;
-bottom:0;
-width:100%;
-background:white;
-display:flex;
-justify-content:space-around;
-padding:10px 0;
-color:#7c3aed;
-}
-
-.navItem{
-text-align:center;
-font-size:14px;
-cursor:pointer;
-}
-
-/* CHAT */
-
-#chatModal{
-display:none;
-position:fixed;
-bottom:0;
-left:0;
-width:100%;
-height:60%;
-background:white;
-color:black;
-border-top-left-radius:20px;
-border-top-right-radius:20px;
-box-shadow:0 -10px 30px rgba(0,0,0,0.3);
-padding:20px;
-box-sizing:border-box;
-}
-
-.decor{
-position:fixed;
-border-radius:50%;
-z-index:-1;
-}
-
-.d1{
-width:220px;
-height:220px;
-background:#eaff00;
-top:-60px;
-left:-60px;
-filter:blur(70px);
-}
-
-.d2{
-width:180px;
-height:180px;
-background:#eaff00;
-bottom:-40px;
-right:-40px;
-filter:blur(60px);
-}
-
-input,textarea,select{
-width:100%;
-padding:8px;
-margin-bottom:10px;
-border-radius:8px;
-border:1px solid #ddd;
-}
-
-.cta{
-font-size:22px;
-font-weight:bold;
-margin-top:25px;
-}
-
-/* ANIMATION */
-
-@keyframes pop{
-0%{transform:scale(0.5);opacity:0;}
-70%{transform:scale(1.1);}
-100%{transform:scale(1);opacity:1;}
-}
-
+.sideCard{ width:200px; opacity:0.5; filter:blur(3px); transform:scale(0.9); }
+.card{ background:white; color:black; border-radius:18px; padding:16px; text-align:center; box-shadow:0 10px 25px rgba(0,0,0,0.25); }
+.card img{ width:100%; border-radius:12px; margin-bottom:8px; }
+.cityTag{ display:inline-block; background:#eaff00; color:black; padding:4px 8px; border-radius:8px; font-size:12px; margin-bottom:6px; }
+.actions{ display:flex; justify-content:space-between; margin-top:10px; }
+.coffeeControls{ display:flex; gap:10px; margin-bottom:20px; justify-content:center; align-items:center; }
+.coffeeControls select, .coffeeControls button{ padding:10px; font-size:16px; border-radius:12px; }
+.coffeeGrid{ display:grid; grid-template-columns:repeat(3,180px); gap:18px; justify-content:center; }
+.coffeeCard{ width:150px; background:white; color:black; border-radius:12px; padding:10px; text-align:center; transition:0.3s; }
+.coffeeCard img{ width:100%; border-radius:8px; }
+.invited{ background:#eaff00; transform:scale(1.05); }
+.vibeCard{ display:flex; gap:12px; background:white; color:black; border-radius:12px; padding:10px; margin-bottom:12px; align-items:center; justify-content:space-between; }
+.vibeCard img{ width:50px; height:50px; border-radius:50%; }
+.bottomNav{ position:fixed; bottom:0; width:100%; background:white; display:flex; justify-content:space-around; padding:10px 0; color:#7c3aed; }
+.navItem{ text-align:center; font-size:14px; cursor:pointer; }
+#chatModal{ display:none; position:fixed; bottom:0; left:0; width:100%; height:60%; background:white; color:black; border-top-left-radius:20px; border-top-right-radius:20px; box-shadow:0 -10px 30px rgba(0,0,0,0.3); padding:20px; box-sizing:border-box; }
+.decor{ position:fixed; border-radius:50%; z-index:-1; }
+.d1{ width:220px; height:220px; background:#eaff00; top:-60px; left:-60px; filter:blur(70px); }
+.d2{ width:180px; height:180px; background:#eaff00; bottom:-40px; right:-40px; filter:blur(60px); }
+input,textarea,select{ width:100%; padding:8px; margin-bottom:10px; border-radius:8px; border:1px solid #ddd; }
+.cta{ font-size:22px; font-weight:bold; margin-top:25px; }
+@keyframes pop{0%{transform:scale(0.5);opacity:0;}70%{transform:scale(1.1);}100%{transform:scale(1);opacity:1;}}
 </style>
 </head>
-
 <body>
 
 <div class="decor d1"></div>
@@ -313,7 +66,6 @@ margin-top:25px;
 <div class="homeButton" onclick="openScreen('start')">🏠</div>
 <div class="profileButton" onclick="openScreen('profile')">👤</div>
 
-<!-- START -->
 <div id="start" class="screen">
 <h1>Вайбмэтч💜 Битрикс24</h1>
 <p class="subtitle">
@@ -328,7 +80,6 @@ margin-top:25px;
 </div>
 </div>
 
-<!-- MATCH -->
 <div id="match" class="screen">
 <h1>Мэтч режим</h1>
 <div class="screenHeader">Ищи коллег по вайбу!</div>
@@ -339,7 +90,6 @@ margin-top:25px;
 </div>
 </div>
 
-<!-- COFFEE -->
 <div id="coffee" class="screen">
 <h1>Random Coffee</h1>
 <div class="screenHeader">Приглашай коллег на кофе (даже вслепую!)</div>
@@ -359,7 +109,6 @@ margin-top:25px;
 <div id="coffeePeople" class="coffeeGrid"></div>
 </div>
 
-<!-- VIBES -->
 <div id="vibes" class="screen">
 <h1>Вайбы</h1>
 <div class="screenHeader">Тут все твои уведомления</div>
@@ -367,7 +116,6 @@ margin-top:25px;
 <div id="vibesList"></div>
 </div>
 
-<!-- PROFILE -->
 <div id="profile" class="screen">
 <h1>Мой профиль</h1>
 <div class="card">
@@ -400,140 +148,114 @@ margin-top:25px;
 </div>
 
 <script>
-// --- PEOPLE ---
 let people=[
 {name:"Анна",city:"Москва",dept:"Маркетинг",about:"Люблю бег и пазлы",photo:"https://randomuser.me/api/portraits/women/21.jpg"},
 {name:"Игорь",city:"Питер",dept:"Разработка",about:"Катаюсь на сноуборде",photo:"https://randomuser.me/api/portraits/men/22.jpg"},
 {name:"Мария",city:"Калининград",dept:"HR",about:"Обожаю кофе и котов",photo:"https://randomuser.me/api/portraits/women/23.jpg"},
 {name:"Денис",city:"Москва",dept:"Продажи",about:"Футбол и настолки",photo:"https://randomuser.me/api/portraits/men/24.jpg"},
-{name:"Ольга",city:"Владимир",dept:"Продукт",about:"Люблю UX и йогу",photo:"https://randomuser.me/api/portraits/women/25.jpg"},
+{name:"Ольга",city:"Владимир",dept:"Продукт",about:"UX и йога",photo:"https://randomuser.me/api/portraits/women/25.jpg"},
 {name:"Артём",city:"Москва",dept:"DevOps",about:"Горные лыжи",photo:"https://randomuser.me/api/portraits/men/26.jpg"},
 {name:"Наташа",city:"Питер",dept:"Support",about:"Рисую акварелью",photo:"https://randomuser.me/api/portraits/women/27.jpg"},
-{name:"Кирилл",city:"Новосибирск",dept:"Backend",about:"Люблю велосипеды",photo:"https://randomuser.me/api/portraits/men/28.jpg"},
+{name:"Кирилл",city:"Новосибирск",dept:"Backend",about:"Велосипеды",photo:"https://randomuser.me/api/portraits/men/28.jpg"},
 {name:"Лена",city:"Москва",dept:"Контент",about:"Квизы и сериалы",photo:"https://randomuser.me/api/portraits/women/29.jpg"},
 {name:"Максим",city:"Калининград",dept:"QA",about:"Настольный теннис",photo:"https://randomuser.me/api/portraits/men/30.jpg"},
 {name:"Катя",city:"Питер",dept:"Дизайн",about:"Иллюстрации и кофе",photo:"https://randomuser.me/api/portraits/women/31.jpg"},
-{name:"Павел",city:"Москва",dept:"Аналитика",about:"Люблю графики и бег",photo:"https://randomuser.me/api/portraits/men/32.jpg"},
+{name:"Павел",city:"Москва",dept:"Аналитика",about:"Графики и бег",photo:"https://randomuser.me/api/portraits/men/32.jpg"},
 {name:"Света",city:"Владимир",dept:"HR",about:"Йога и книги",photo:"https://randomuser.me/api/portraits/women/33.jpg"},
-{name:"Егор",city:"Новосибирск",dept:"Frontend",about:"Катаюсь на скейте",photo:"https://randomuser.me/api/portraits/men/34.jpg"},
+{name:"Егор",city:"Новосибирск",dept:"Frontend",about:"Скейтборд",photo:"https://randomuser.me/api/portraits/men/34.jpg"},
 {name:"Алина",city:"Москва",dept:"Маркетинг",about:"Фотография и путешествия",photo:"https://randomuser.me/api/portraits/women/35.jpg"}
 ]
 
-// --- VARIABLES ---
 let index=0, vibeClicks=0, refreshCount=0, totalVibes=0, totalCoffeeInvites=0
 
-// --- SCREEN ---
 function openScreen(id){
-document.querySelectorAll(".screen").forEach(s=>s.style.display="none")
-document.getElementById(id).style.display="flex"
+  document.querySelectorAll(".screen").forEach(s=>s.style.display="none")
+  document.getElementById(id).style.display="flex"
 }
 
-// --- MATCH ---
+function startApp(){ openScreen("match"); renderCard() }
+
 function cardHTML(p,active){
-return `<div class="card">
-<img src="${p.photo}">
-<span class="cityTag">${p.city}</span>
-<h3>${p.name}</h3>
-<p>${p.dept}</p>
-<p>${p.about}</p>
-${active?`<div class="actions">
-<button class="secondary" onclick="skip()">Пропустить</button>
-<button class="primary" onclick="vibe()">💜 Вайб</button>
-</div>`:""}
-</div>`
+  return `<div class="card"><img src="${p.photo}"><span class="cityTag">${p.city}</span><h3>${p.name}</h3><p>${p.dept}</p><p>${p.about}</p>
+  ${active?`<div class="actions"><button class="secondary" onclick="skip()">Пропустить</button><button class="primary" onclick="vibe()">💜 Вайб</button></div>`:""}</div>`
 }
 
 function renderCard(){
-let current=people[index%people.length]
-let prev=people[(index-1+people.length)%people.length]
-let next=people[(index+1)%people.length]
-mainCard.innerHTML=cardHTML(current,true)
-prevCard.innerHTML=cardHTML(prev,false)
-nextCard.innerHTML=cardHTML(next,false)
+  let current=people[index%people.length]
+  let prev=people[(index-1+people.length)%people.length]
+  let next=people[(index+1)%people.length]
+  mainCard.innerHTML=cardHTML(current,true)
+  prevCard.innerHTML=cardHTML(prev,false)
+  nextCard.innerHTML=cardHTML(next,false)
 }
 
-function skip(){index++;renderCard()}
-function vibe(){
-vibeClicks++; totalVibes++;
-let current=people[index%people.length]
-if(vibeClicks%3==0){
-mainCard.innerHTML=`<div class="card"><h2>💜 У вас Вайбмэтч!</h2><p>Похоже вы на одной волне</p><button class="primary" onclick="openChat('${current.name}')">Написать</button></div>`
-}else{index++;renderCard()}
+function skip(){ index++; renderCard() }
+function vibe(){ vibeClicks++; totalVibes++; let current=people[index%people.length]
+  if(vibeClicks%3==0){ mainCard.innerHTML=`<div class="card"><h2>💜 У вас Вайбмэтч!</h2><p>Похоже вы на одной волне</p><button class="primary" onclick="openChat('${current.name}')">Написать</button></div>` }
+  else{ index++; renderCard() }
 }
 
-// --- COFFEE ---
+// COFFEE
 function generateCoffee(){
-let grid=document.getElementById("coffeePeople"); grid.innerHTML=""
-let city=document.getElementById("cityFilter").value
-let filtered=people.filter(p=>city==="all"?true:p.city===city)
-for(let p of filtered){
-grid.innerHTML+=`<div class="coffeeCard" id="coffee_${p.name}"><img src="${p.photo}"><b>${p.name}</b><p>${p.about}</p><button class="primary" onclick="invite('${p.name}')">Позвать</button></div>`
-}
+  let grid=document.getElementById("coffeePeople"); grid.innerHTML=""
+  let city=document.getElementById("cityFilter").value
+  let filtered=people.filter(p=>city==="all"?true:p.city===city)
+  for(let p of filtered){
+    grid.innerHTML+=`<div class="coffeeCard" id="coffee_${p.name}"><img src="${p.photo}"><b>${p.name}</b><p>${p.about}</p><button class="primary" onclick="invite('${p.name}')">Позвать</button></div>`
+  }
 }
 
 function refreshAll(){
-if(refreshCount>=3){alert("Лимит обновлений исчерпан 🙂");return}
-refreshCount++
-generateCoffee()
-document.querySelectorAll(".coffeeCard").forEach(c=>c.style.animation="pop 0.5s ease")
+  if(refreshCount>=3){alert("Лимит обновлений исчерпан 🙂"); return}
+  refreshCount++
+  generateCoffee()
+  document.querySelectorAll(".coffeeCard").forEach(c=>c.style.animation="pop 0.5s ease")
 }
 
 function blindChoice(){
-let city=document.getElementById("cityFilter").value
-let filtered=people.filter(p=>city==="all"?true:p.city===city)
-let p=filtered[Math.floor(Math.random()*filtered.length)]
-totalCoffeeInvites++
-coffeePeople.innerHTML=`<div style="display:flex;justify-content:center;width:100%;margin-top:40px;"><div class="coffeeCard" style="animation:pop 0.5s ease"><img src="${p.photo}"><b>${p.name}</b><p>${p.about}</p><button class="primary" onclick="invite('${p.name}')">Позвать!</button></div></div>`
+  let city=document.getElementById("cityFilter").value
+  let filtered=people.filter(p=>city==="all"?true:p.city===city)
+  let p=filtered[Math.floor(Math.random()*filtered.length)]
+  totalCoffeeInvites++
+  coffeePeople.innerHTML=`<div style="display:flex;justify-content:center;width:100%;margin-top:40px;"><div class="coffeeCard" style="animation:pop 0.5s ease"><img src="${p.photo}"><b>${p.name}</b><p>${p.about}</p><button class="primary" onclick="invite('${p.name}')">Позвать!</button></div></div>`
 }
 
 function invite(name){
-let card=document.getElementById("coffee_"+name)
-if(card){
-card.classList.add("invited")
-card.querySelector("button").innerText="☕ приглашение отправлено!"
-totalCoffeeInvites++
-}
+  let card=document.getElementById("coffee_"+name)
+  if(card){ card.classList.add("invited"); card.querySelector("button").innerText="☕ приглашение отправлено!"; totalCoffeeInvites++ }
 }
 
-// --- CHAT ---
-function openChat(name){chatName.innerText=name;chatModal.style.display="block"}
-function closeChat(){chatModal.style.display="none"}
+// CHAT
+function openChat(name){ chatName.innerText=name; chatModal.style.display="block" }
+function closeChat(){ chatModal.style.display="none" }
 function sendMessage(){
-let text=chatInput.value.trim()
-if(!text)return
-let msg=document.createElement("div")
-msg.style.background="#eaff00"
-msg.style.padding="6px 10px"
-msg.style.borderRadius="8px"
-msg.style.marginBottom="6px"
-msg.style.marginLeft="auto"
-msg.style.width="max-content"
-msg.innerText=text
-chatMessages.appendChild(msg)
-chatInput.value=""
-setTimeout(fakeReply,1000)
+  let text=chatInput.value.trim(); if(!text) return
+  let msg=document.createElement("div"); msg.style.background="#eaff00"; msg.style.padding="6px 10px"; msg.style.borderRadius="8px"; msg.style.marginBottom="6px"; msg.style.marginLeft="auto"; msg.style.width="max-content"; msg.innerText=text
+  chatMessages.appendChild(msg); chatInput.value=""
+  setTimeout(fakeReply,1000)
 }
 function fakeReply(){
-let replies=["Привет! 😄","Класс что замэтчились!","Я была в команде «Волоса препятствий» на квизе :DDD","Как дела?","Ты давно в Битриксе?","Надо сходить на кофе ☕"]
-let text=replies[Math.floor(Math.random()*replies.length)]
-let msg=document.createElement("div")
-msg.style.background="white"
-msg.style.padding="6px 10px"
-msg.style.borderRadius="8px"
-msg.style.marginBottom="6px"
-msg.style.width="max-content"
-msg.innerText=text
-chatMessages.appendChild(msg)
+  let replies=["Привет! 😄","Класс что замэтчились!","Я была в команде «Волоса препятствий» на квизе :DDD","Как дела?","Ты давно в Битриксе?","Надо сходить на кофе ☕"]
+  let text=replies[Math.floor(Math.random()*replies.length)]
+  let msg=document.createElement("div"); msg.style.background="white"; msg.style.padding="6px 10px"; msg.style.borderRadius="8px"; msg.style.marginBottom="6px"; msg.style.width="max-content"; msg.innerText=text
+  chatMessages.appendChild(msg)
 }
 
-// --- VIBES ---
+// VIBES
 function renderVibes(){
-let list=document.getElementById("vibesList")
-list.innerHTML=""
-document.getElementById("vibesSummary").innerText=`Тебе поставили ${totalVibes} вайбов и ${totalCoffeeInvites} раз позвали на кофе`
-let types=["match","coffee"]
-for(let i=0;i<10;i++){
-let p=people[Math.floor(Math.random()*people.length)]
-let type=types[Math.floor(Math.random()*types.length)]
-let text=type==="match"?"💜 У вас вайбмэтч":"☕ Тебя пригласили на кофе"
-list.innerHTML+=`<div class="vibeCard"><
+  let list=document.getElementById("vibesList")
+  list.innerHTML=""
+  document.getElementById("vibesSummary").innerText=`Тебе поставили ${totalVibes} вайбов и ${totalCoffeeInvites} раз позвали на кофе`
+  let types=["match","coffee"]
+  for(let i=0;i<10;i++){
+    let p=people[Math.floor(Math.random()*people.length)]
+    let type=types[Math.floor(Math.random()*types.length)]
+    let text=type==="match"?"💜 У вас вайбмэтч":"☕ Тебя пригласили на кофе"
+    list.innerHTML+=`<div class="vibeCard"><div style="display:flex;gap:12px;align-items:center;"><img src="${p.photo}"><span>${text} — ${p.name}</span></div><button class="primary" onclick="openChat('${p.name}')">Перейти в чат</button></div>`
+  }
+}
+
+document.addEventListener("DOMContentLoaded",function(){ openScreen("start") })
+</script>
+</body>
+</html>
