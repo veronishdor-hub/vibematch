@@ -22,9 +22,14 @@ box-sizing:border-box;
 display:flex;
 flex-direction:column;
 justify-content:center;
+align-items:center;
 }
 
 h1{text-align:center;}
+
+#start h1{
+font-size:64px; /* в 2 раза больше */
+}
 
 .subtitle{
 text-align:center;
@@ -149,11 +154,18 @@ margin-top:10px;
 
 /* COFFEE */
 
+.coffeeControls{
+display:flex;
+gap:10px;
+margin-bottom:20px;
+justify-content:center;
+}
+
 .coffeeGrid{
 display:grid;
 grid-template-columns:repeat(3,180px);
 gap:18px;
-margin-top:20px;
+margin-top:10px;
 justify-content:center;
 }
 
@@ -188,6 +200,7 @@ border-radius:12px;
 padding:10px;
 margin-bottom:12px;
 align-items:center;
+justify-content:space-between;
 }
 
 .vibeCard img{
@@ -271,20 +284,12 @@ font-weight:bold;
 margin-top:25px;
 }
 
-/* BLIND CHOICE ANIMATION */
+/* ANIMATION */
 
 @keyframes pop{
-0%{
-transform:scale(0.5);
-opacity:0;
-}
-70%{
-transform:scale(1.1);
-}
-100%{
-transform:scale(1);
-opacity:1;
-}
+0%{transform:scale(0.5);opacity:0;}
+70%{transform:scale(1.1);}
+100%{transform:scale(1);opacity:1;}
 }
 
 </style>
@@ -299,46 +304,31 @@ opacity:1;
 <div class="profileButton" onclick="openScreen('profile')">👤</div>
 
 <div id="start" class="screen">
-
 <h1>Вайбмэтч💜 Битрикс24</h1>
-
 <p class="subtitle">
 Пространство для новых людей, знакомств и впечатлений!<br><br>
 🔥 Мэтч — ищи коллег по вайбу<br>
 ☕ Random Coffee — приглашай случайных коллег<br>
 💌 Вайбы — кто написал и позвал на кофе
 </p>
-
 <div class="center">
-
 <button class="primary bigButton" onclick="startApp()">Начать</button>
-
 <div class="cta">Давай знакомиться!</div>
-
 </div>
-
 </div>
 
 <div id="match" class="screen">
-
 <h1>Мэтч режим</h1>
-
 <div class="matchContainer">
-
 <div id="prevCard" class="sideCard"></div>
 <div id="mainCard"></div>
 <div id="nextCard" class="sideCard"></div>
-
 </div>
-
 </div>
 
 <div id="coffee" class="screen">
-
 <h1>Random Coffee</h1>
-
-<div class="center">
-
+<div class="coffeeControls">
 <select id="cityFilter">
 <option value="all">Все города</option>
 <option>Москва</option>
@@ -347,96 +337,65 @@ opacity:1;
 <option>Владимир</option>
 <option>Новосибирск</option>
 </select>
-
 <button class="primary" onclick="generateCoffee()">Пригласить!</button>
-
-<button onclick="blindChoice()">Выбрать вслепую</button>
-
+<button class="primary" onclick="refreshAll()">🔄 Обновить</button>
 </div>
-
 <div id="coffeePeople" class="coffeeGrid"></div>
-
 </div>
 
 <div id="vibes" class="screen">
-
 <h1>Вайбы</h1>
-
 <div id="vibesList"></div>
-
 </div>
 
 <div id="profile" class="screen">
-
 <h1>Мой профиль</h1>
-
 <div class="card">
-
 <input placeholder="Имя">
 <input placeholder="Фамилия">
 <input placeholder="Отдел">
 <input placeholder="Город">
-
 <textarea placeholder="О себе"></textarea>
-
 <input type="file" accept="image/*">
-
 <button class="primary">Сохранить</button>
-
 </div>
-
 </div>
 
 <div class="bottomNav">
-
-<div class="navItem" onclick="openScreen('match');renderCard();">
-🔥<br>Мэтч
-</div>
-
-<div class="navItem" onclick="openScreen('coffee');generateCoffee();">
-☕<br>Coffee
-</div>
-
-<div class="navItem" onclick="openScreen('vibes');renderVibes();">
-💌<br>Вайбы
-</div>
-
+<div class="navItem" onclick="openScreen('match');renderCard();">🔥<br>Мэтч</div>
+<div class="navItem" onclick="openScreen('coffee');generateCoffee();">☕<br>Coffee</div>
+<div class="navItem" onclick="openScreen('vibes');renderVibes();">💌<br>Вайбы</div>
 </div>
 
 <div id="chatModal">
-
 <div style="display:flex;justify-content:space-between">
 <b id="chatName">Чат</b>
 <button onclick="closeChat()">✖</button>
 </div>
-
 <div id="chatMessages" style="height:70%;overflow:auto;background:#f3f3f3;border-radius:10px;padding:10px;margin:10px 0"></div>
-
 <div style="display:flex;gap:8px">
 <input id="chatInput" placeholder="Написать..." style="flex:1">
 <button class="primary" onclick="sendMessage()">➤</button>
 </div>
-
 </div>
 
 <script>
-
 let people=[
-{name:"Анна",city:"Москва",dept:"Маркетинг",about:"Люблю бег и собирать пазлы",photo:"https://randomuser.me/api/portraits/women/1.jpg"},
-{name:"Игорь",city:"Питер",dept:"Разработка",about:"Катаюсь на сноуборде",photo:"https://randomuser.me/api/portraits/men/2.jpg"},
-{name:"Мария",city:"Калининград",dept:"HR",about:"Обожаю кофе и котов",photo:"https://randomuser.me/api/portraits/women/3.jpg"},
-{name:"Денис",city:"Москва",dept:"Продажи",about:"Футбол и настолки",photo:"https://randomuser.me/api/portraits/men/4.jpg"},
-{name:"Ольга",city:"Владимир",dept:"Продукт",about:"Люблю UX и йогу",photo:"https://randomuser.me/api/portraits/women/5.jpg"},
-{name:"Артём",city:"Москва",dept:"DevOps",about:"Горные лыжи",photo:"https://randomuser.me/api/portraits/men/6.jpg"},
-{name:"Наташа",city:"Питер",dept:"Support",about:"Рисую акварелью",photo:"https://randomuser.me/api/portraits/women/7.jpg"},
-{name:"Кирилл",city:"Новосибирск",dept:"Backend",about:"Люблю велосипеды",photo:"https://randomuser.me/api/portraits/men/8.jpg"},
-{name:"Лена",city:"Москва",dept:"Контент",about:"Квизы и сериалы",photo:"https://randomuser.me/api/portraits/women/9.jpg"},
-{name:"Максим",city:"Калининград",dept:"QA",about:"Настольный теннис",photo:"https://randomuser.me/api/portraits/men/10.jpg"},
-{name:"Катя",city:"Питер",dept:"Дизайн",about:"Иллюстрации и кофе",photo:"https://randomuser.me/api/portraits/women/11.jpg"},
-{name:"Павел",city:"Москва",dept:"Аналитика",about:"Люблю графики и бег",photo:"https://randomuser.me/api/portraits/men/12.jpg"},
-{name:"Света",city:"Владимир",dept:"HR",about:"Йога и книги",photo:"https://randomuser.me/api/portraits/women/13.jpg"},
-{name:"Егор",city:"Новосибирск",dept:"Frontend",about:"Катаюсь на скейте",photo:"https://randomuser.me/api/portraits/men/14.jpg"},
-{name:"Алина",city:"Москва",dept:"Маркетинг",about:"Фотография и путешествия",photo:"https://randomuser.me/api/portraits/women/15.jpg"}
+{name:"Анна",city:"Москва",dept:"Маркетинг",about:"Люблю бег и пазлы",photo:"https://randomuser.me/api/portraits/women/21.jpg"},
+{name:"Игорь",city:"Питер",dept:"Разработка",about:"Катаюсь на сноуборде",photo:"https://randomuser.me/api/portraits/men/22.jpg"},
+{name:"Мария",city:"Калининград",dept:"HR",about:"Обожаю кофе и котов",photo:"https://randomuser.me/api/portraits/women/23.jpg"},
+{name:"Денис",city:"Москва",dept:"Продажи",about:"Футбол и настолки",photo:"https://randomuser.me/api/portraits/men/24.jpg"},
+{name:"Ольга",city:"Владимир",dept:"Продукт",about:"Люблю UX и йогу",photo:"https://randomuser.me/api/portraits/women/25.jpg"},
+{name:"Артём",city:"Москва",dept:"DevOps",about:"Горные лыжи",photo:"https://randomuser.me/api/portraits/men/26.jpg"},
+{name:"Наташа",city:"Питер",dept:"Support",about:"Рисую акварелью",photo:"https://randomuser.me/api/portraits/women/27.jpg"},
+{name:"Кирилл",city:"Новосибирск",dept:"Backend",about:"Люблю велосипеды",photo:"https://randomuser.me/api/portraits/men/28.jpg"},
+{name:"Лена",city:"Москва",dept:"Контент",about:"Квизы и сериалы",photo:"https://randomuser.me/api/portraits/women/29.jpg"},
+{name:"Максим",city:"Калининград",dept:"QA",about:"Настольный теннис",photo:"https://randomuser.me/api/portraits/men/30.jpg"},
+{name:"Катя",city:"Питер",dept:"Дизайн",about:"Иллюстрации и кофе",photo:"https://randomuser.me/api/portraits/women/31.jpg"},
+{name:"Павел",city:"Москва",dept:"Аналитика",about:"Люблю графики и бег",photo:"https://randomuser.me/api/portraits/men/32.jpg"},
+{name:"Света",city:"Владимир",dept:"HR",about:"Йога и книги",photo:"https://randomuser.me/api/portraits/women/33.jpg"},
+{name:"Егор",city:"Новосибирск",dept:"Frontend",about:"Катаюсь на скейте",photo:"https://randomuser.me/api/portraits/men/34.jpg"},
+{name:"Алина",city:"Москва",dept:"Маркетинг",about:"Фотография и путешествия",photo:"https://randomuser.me/api/portraits/women/35.jpg"}
 ]
 
 let index=0
@@ -454,7 +413,6 @@ renderCard()
 }
 
 function cardHTML(p,active){
-
 return `
 <div class="card">
 <img src="${p.photo}">
@@ -462,181 +420,76 @@ return `
 <h3>${p.name}</h3>
 <p>${p.dept}</p>
 <p>${p.about}</p>
-
-${active ? `
+${active?`
 <div class="actions">
 <button class="secondary" onclick="skip()">Пропустить</button>
 <button class="primary" onclick="vibe()">💜 Вайб</button>
-</div>` : ``}
-
+</div>`:""}
 </div>`
 }
 
 function renderCard(){
-
 let current=people[index%people.length]
 let prev=people[(index-1+people.length)%people.length]
 let next=people[(index+1)%people.length]
-
 mainCard.innerHTML=cardHTML(current,true)
 prevCard.innerHTML=cardHTML(prev,false)
 nextCard.innerHTML=cardHTML(next,false)
-
 }
 
-function skip(){
-index++
-renderCard()
-}
-
+function skip(){index++;renderCard()}
 function vibe(){
-
 vibeClicks++
 let current=people[index%people.length]
-
 if(vibeClicks%3==0){
-
-mainCard.innerHTML=`
-
-<div class="card">
-
-<h2>💜 У вас Вайбмэтч!</h2>
-<p>Похоже вы на одной волне</p>
-
-<button class="primary" onclick="openChat('${current.name}')">
-Написать
-</button>
-
-</div>`
-
-}else{
-
-index++
-renderCard()
-
+mainCard.innerHTML=`<div class="card"><h2>💜 У вас Вайбмэтч!</h2><p>Похоже вы на одной волне</p><button class="primary" onclick="openChat('${current.name}')">Написать</button></div>`
+}else{index++;renderCard()}
 }
 
-}
+// ---------------- COFFEE ----------------
 
 function generateCoffee(){
-
 let grid=document.getElementById("coffeePeople")
 grid.innerHTML=""
-
 let city=document.getElementById("cityFilter").value
-
-let filtered = people.filter(p=>{
-if(city==="all") return true
-return p.city===city
-})
-
+let filtered=people.filter(p=>city==="all"?true:p.city===city)
 for(let p of filtered){
-
-grid.innerHTML+=`
-
-<div class="coffeeCard" id="coffee_${p.name}">
-<img src="${p.photo}">
-<b>${p.name}</b>
-<p>${p.about}</p>
-
-<div style="display:flex;gap:6px;justify-content:center">
-
-<button class="primary" onclick="invite('${p.name}')">Позвать</button>
-
-<button onclick="refreshCard('${p.name}')">🔄</button>
-
-</div>
-
-</div>`
-
+grid.innerHTML+=`<div class="coffeeCard" id="coffee_${p.name}"><img src="${p.photo}"><b>${p.name}</b><p>${p.about}</p><button class="primary" onclick="invite('${p.name}')">Позвать</button></div>`
+}
 }
 
-}
-
-function refreshCard(name){
-
-if(refreshCount>=3){
-alert("Лимит обновлений исчерпан 🙂")
-return
-}
-
+function refreshAll(){
+if(refreshCount>=3){alert("Лимит обновлений исчерпан 🙂");return}
 refreshCount++
-
-let card=document.getElementById("coffee_"+name)
-
-let p=people[Math.floor(Math.random()*people.length)]
-
-card.innerHTML=`
-
-<img src="${p.photo}">
-<b>${p.name}</b>
-<p>${p.about}</p>
-
-<div style="display:flex;gap:6px;justify-content:center">
-
-<button class="primary" onclick="invite('${p.name}')">Позвать</button>
-
-<button onclick="refreshCard('${p.name}')">🔄</button>
-
-</div>
-
-`
-
+let city=document.getElementById("cityFilter").value
+let filtered=people.filter(p=>city==="all"?true:p.city===city)
+let grid=document.getElementById("coffeePeople")
+grid.innerHTML=""
+for(let p of filtered){
+grid.innerHTML+=`<div class="coffeeCard" id="coffee_${p.name}" style="animation:pop 0.5s ease"><img src="${p.photo}"><b>${p.name}</b><p>${p.about}</p><button class="primary" onclick="invite('${p.name}')">Позвать</button></div>`
+}
 }
 
 function blindChoice(){
-
-let p=people[Math.floor(Math.random()*people.length)]
-
-coffeePeople.innerHTML=`
-
-<div style="
-display:flex;
-justify-content:center;
-width:100%;
-margin-top:40px;
-">
-
-<div class="coffeeCard" style="animation:pop 0.5s ease">
-
-<img src="${p.photo}">
-<b>${p.name}</b>
-<p>${p.about}</p>
-
-<button class="primary" onclick="invite('${p.name}')">
-Позвать!
-</button>
-
-</div>
-
-</div>`
-
+let city=document.getElementById("cityFilter").value
+let filtered=people.filter(p=>city==="all"?true:p.city===city)
+let p=filtered[Math.floor(Math.random()*filtered.length)]
+coffeePeople.innerHTML=`<div style="display:flex;justify-content:center;width:100%;margin-top:40px;"><div class="coffeeCard" style="animation:pop 0.5s ease"><img src="${p.photo}"><b>${p.name}</b><p>${p.about}</p><button class="primary" onclick="invite('${p.name}')">Позвать!</button></div></div>`
 }
 
 function invite(name){
-
 let card=document.getElementById("coffee_"+name)
 card.classList.add("invited")
 card.querySelector("button").innerText="☕ приглашение отправлено!"
-
 }
 
-function openChat(name){
+// ---------------- CHAT ----------------
 
-chatName.innerText=name
-chatModal.style.display="block"
-
-}
-
-function closeChat(){
-chatModal.style.display="none"
-}
-
+function openChat(name){chatName.innerText=name;chatModal.style.display="block"}
+function closeChat(){chatModal.style.display="none"}
 function sendMessage(){
-
 let text=chatInput.value.trim()
 if(!text)return
-
 let msg=document.createElement("div")
 msg.style.background="#eaff00"
 msg.style.padding="6px 10px"
@@ -645,28 +498,13 @@ msg.style.marginBottom="6px"
 msg.style.marginLeft="auto"
 msg.style.width="max-content"
 msg.innerText=text
-
 chatMessages.appendChild(msg)
-
 chatInput.value=""
-
 setTimeout(fakeReply,1000)
-
 }
-
 function fakeReply(){
-
-let replies=[
-"Привет! 😄",
-"Класс что замэтчились!",
-"Я была в команде «Волоса препятствий» на квизе :DDD",
-"Как дела?",
-"Ты давно в Битриксе?",
-"Надо сходить на кофе ☕"
-]
-
+let replies=["Привет! 😄","Класс что замэтчились!","Я была в команде «Волоса препятствий» на квизе :DDD","Как дела?","Ты давно в Битриксе?","Надо сходить на кофе ☕"]
 let text=replies[Math.floor(Math.random()*replies.length)]
-
 let msg=document.createElement("div")
 msg.style.background="white"
 msg.style.padding="6px 10px"
@@ -674,53 +512,24 @@ msg.style.borderRadius="8px"
 msg.style.marginBottom="6px"
 msg.style.width="max-content"
 msg.innerText=text
-
 chatMessages.appendChild(msg)
-
 }
+
+// ---------------- VIBES ----------------
 
 function renderVibes(){
-
 let list=document.getElementById("vibesList")
 list.innerHTML=""
-
-let types=[
-"match",
-"coffee"
-]
-
+let types=["match","coffee"]
 for(let i=0;i<10;i++){
-
 let p=people[Math.floor(Math.random()*people.length)]
 let type=types[Math.floor(Math.random()*types.length)]
-
-let text=""
-
-if(type==="match"){
-text="💜 У вас вайбмэтч"
+let text=type==="match"?"💜 У вас вайбмэтч":"☕ Тебя пригласили на кофе"
+list.innerHTML+=`<div class="vibeCard"><div style="display:flex;align-items:center;gap:10px;"><img src="${p.photo}"><div><b>${p.name}</b><br>${text}</div></div><button class="primary" onclick="openChat('${p.name}')">Перейти в чат</button></div>`
+}
 }
 
-if(type==="coffee"){
-text="☕ Тебя пригласили на кофе"
-}
-
-list.innerHTML+=`
-
-<div class="vibeCard">
-<img src="${p.photo}">
-<div>
-<b>${p.name}</b><br>
-${text}
-</div>
-</div>`
-
-}
-
-}
-
-window.onload=function(){
-openScreen("start")
-}
+window.onload=function(){openScreen("start")}
 
 </script>
 
