@@ -157,7 +157,7 @@ input,textarea,select{ width:100%; padding:8px; margin-bottom:10px; border-radiu
 </div>
 </div>
 
-<!-- Модалка для лимита обновлений -->
+<!-- Модалка лимита -->
 <div id="limitModal" class="modalOverlay" style="display:none;">
   <div class="modalContent">
     <h2>Упс!</h2>
@@ -167,7 +167,10 @@ input,textarea,select{ width:100%; padding:8px; margin-bottom:10px; border-radiu
 </div>
 
 <script>
-// Данные людей
+// === Глобальные переменные элементов ===
+let mainCard, prevCard, nextCard, coffeePeople, vibesList, vibesSummary, chatName, chatMessages, chatInput;
+
+// === Данные людей (европейская/славянская внешность) ===
 let people=[
 {name:"Анна",city:"Москва",dept:"Маркетинг",about:"Люблю бег и пазлы",photo:"https://randomuser.me/api/portraits/women/21.jpg"},
 {name:"Игорь",city:"Питер",dept:"Разработка",about:"Сноуборд",photo:"https://randomuser.me/api/portraits/men/22.jpg"},
@@ -188,21 +191,32 @@ let people=[
 
 let index=0, vibeClicks=0, refreshCount=0, totalVibes=0, totalCoffeeInvites=0;
 
-// Навигация
+// === Инициализация ===
+window.onload = function(){
+  mainCard = document.getElementById("mainCard");
+  prevCard = document.getElementById("prevCard");
+  nextCard = document.getElementById("nextCard");
+  coffeePeople = document.getElementById("coffeePeople");
+  vibesList = document.getElementById("vibesList");
+  vibesSummary = document.getElementById("vibesSummary");
+  chatName = document.getElementById("chatName");
+  chatMessages = document.getElementById("chatMessages");
+  chatInput = document.getElementById("chatInput");
+  openScreen("start");
+}
+
+// === Навигация ===
 function openScreen(id){
   document.querySelectorAll(".screen").forEach(s=>s.style.display="none");
   document.getElementById(id).style.display="flex";
 }
 
-// Старт
+// === Мэтч ===
 function startApp(){ openScreen("match"); renderCard(); }
-
-// Мэтч карточки
 function cardHTML(p,active){
   return `<div class="card"><img src="${p.photo}"><span class="cityTag">${p.city}</span><h3>${p.name}</h3><p>${p.dept}</p><p>${p.about}</p>
   ${active?`<div class="actions"><button class="secondary" onclick="skip()">Пропустить</button><button class="primary" onclick="vibe()">💜 Вайб</button></div>`:""}</div>`;
 }
-
 function renderCard(){
   let current=people[index%people.length];
   let prev=people[(index-1+people.length)%people.length];
@@ -211,16 +225,15 @@ function renderCard(){
   prevCard.innerHTML=cardHTML(prev,false);
   nextCard.innerHTML=cardHTML(next,false);
 }
-
 function skip(){ index++; renderCard(); }
 function vibe(){ vibeClicks++; totalVibes++; let current=people[index%people.length];
   if(vibeClicks%3==0){ mainCard.innerHTML=`<div class="card"><h2>💜 У вас Вайбмэтч!</h2><p>Похоже вы на одной волне</p><button class="primary" onclick="openChat('${current.name}','match')">Написать</button></div>` }
   else{ index++; renderCard() }
 }
 
-// Coffee
+// === Coffee ===
 function generateCoffee(){
-  let grid=document.getElementById("coffeePeople"); grid.innerHTML="";
+  let grid=coffeePeople; grid.innerHTML="";
   let city=document.getElementById("cityFilter").value;
   let filtered=people.filter(p=>city==="all"?true:p.city===city);
   filtered.forEach(p=>{
@@ -238,14 +251,14 @@ function refreshAll(){
   let city=document.getElementById("cityFilter").value;
   let filtered=people.filter(p=>city==="all"?true:p.city===city);
   filtered.sort(()=>Math.random()-0.5);
-  let grid=document.getElementById("coffeePeople"); grid.innerHTML="";
+  coffeePeople.innerHTML="";
   filtered.forEach(p=>{
     let card=document.createElement("div");
     card.className="coffeeCard";
     card.id="coffee_"+p.name;
     card.style.animation="pop 0.5s ease";
     card.innerHTML=`<img src="${p.photo}"><b>${p.name}</b><p>${p.about}</p><button class="primary" onclick="invite('${p.name}')">Позвать</button>`;
-    grid.appendChild(card);
+    coffeePeople.appendChild(card);
   });
 }
 
@@ -262,16 +275,13 @@ function invite(name){
   if(card){ card.classList.add("invited"); card.querySelector("button").innerText="☕ приглашение отправлено!"; totalCoffeeInvites++ }
 }
 
-// Limit modal
+// === Limit modal ===
 function showLimitModal(){ document.getElementById("limitModal").style.display="flex"; }
 function closeLimitModal(){ document.getElementById("limitModal").style.display="none"; }
 
-// Chat
+// === Chat ===
 function openChat(name,type){
   chatName.innerText=name;
   chatModal.style.display="block";
   chatMessages.innerHTML="";
   if(type==="match") sendSystemMessage("У нас вайбмэтч! круто давай знакомиться");
-  if(type==="coffee") sendSystemMessage("Пора выпить кофе? гО? :)");
-  // Мэтч чат 2 первых сообщения
-  if(type==="match"){ sendSystemMessage("Ого привет!"); setTimeout(()=>sendSystem
