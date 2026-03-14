@@ -19,6 +19,9 @@ display:none;
 padding:30px;
 min-height:100vh;
 box-sizing:border-box;
+display:flex;
+flex-direction:column;
+justify-content:center;
 }
 
 h1{text-align:center;}
@@ -27,6 +30,8 @@ h1{text-align:center;}
 text-align:center;
 margin-bottom:30px;
 opacity:0.95;
+font-size:20px;
+line-height:1.6;
 }
 
 button{
@@ -46,6 +51,12 @@ font-weight:bold;
 .secondary{
 background:white;
 color:black;
+}
+
+.bigButton{
+font-size:20px;
+padding:16px 28px;
+border-radius:14px;
 }
 
 .center{text-align:center}
@@ -161,8 +172,6 @@ width:100%;
 border-radius:8px;
 }
 
-/* INVITE ANIMATION */
-
 .invited{
 background:#eaff00;
 transform:scale(1.05);
@@ -224,8 +233,6 @@ padding:20px;
 box-sizing:border-box;
 }
 
-/* DECOR */
-
 .decor{
 position:fixed;
 border-radius:50%;
@@ -280,16 +287,15 @@ margin-top:25px;
 <h1>Вайбмэтч💜 Битрикс24</h1>
 
 <p class="subtitle">
-
+Пространство для новых людей, знакомств и впечатлений!<br><br>
 🔥 Мэтч — ищи коллег по вайбу<br>
 ☕ Random Coffee — приглашай случайных коллег<br>
 💌 Вайбы — кто написал и позвал на кофе
-
 </p>
 
 <div class="center">
 
-<button class="primary" onclick="startApp()">Начать</button>
+<button class="primary bigButton" onclick="startApp()">Начать</button>
 
 <div class="cta">Давай знакомиться!</div>
 
@@ -317,9 +323,18 @@ margin-top:25px;
 
 <div class="center">
 
-<button class="primary" onclick="generateCoffee()">
-Пригласить!
-</button>
+<select id="cityFilter">
+<option value="all">Все города</option>
+<option>Москва</option>
+<option>Питер</option>
+<option>Калининград</option>
+<option>Владимир</option>
+<option>Новосибирск</option>
+</select>
+
+<button class="primary" onclick="generateCoffee()">Пригласить!</button>
+
+<button onclick="blindChoice()">Выбрать вслепую</button>
 
 </div>
 
@@ -331,10 +346,7 @@ margin-top:25px;
 
 <h1>Вайбы</h1>
 
-<div class="vibeCard">
-<img src="https://randomuser.me/api/portraits/women/44.jpg">
-<div><b>Анна</b><br>💜 У вас вайбмэтч</div>
-</div>
+<div id="vibesList"></div>
 
 </div>
 
@@ -350,6 +362,8 @@ margin-top:25px;
 <input placeholder="Город">
 
 <textarea placeholder="О себе"></textarea>
+
+<input type="file" accept="image/*">
 
 <button class="primary">Сохранить</button>
 
@@ -367,7 +381,7 @@ margin-top:25px;
 ☕<br>Coffee
 </div>
 
-<div class="navItem" onclick="openScreen('vibes')">
+<div class="navItem" onclick="openScreen('vibes');renderVibes();">
 💌<br>Вайбы
 </div>
 
@@ -392,11 +406,21 @@ margin-top:25px;
 <script>
 
 let people=[
-
-{name:"Анна",city:"Москва",dept:"Маркетинг",about:"Люблю бег",photo:"https://randomuser.me/api/portraits/women/44.jpg"},
-{name:"Игорь",city:"Питер",dept:"Разработка",about:"Пишу код",photo:"https://randomuser.me/api/portraits/men/32.jpg"},
-{name:"Мария",city:"Калининград",dept:"HR",about:"Обожаю кофе",photo:"https://randomuser.me/api/portraits/women/68.jpg"}
-
+{name:"Анна",city:"Москва",dept:"Маркетинг",about:"Люблю бег и собирать пазлы",photo:"https://randomuser.me/api/portraits/women/44.jpg"},
+{name:"Игорь",city:"Питер",dept:"Разработка",about:"Катаюсь на сноуборде",photo:"https://randomuser.me/api/portraits/men/32.jpg"},
+{name:"Мария",city:"Калининград",dept:"HR",about:"Обожаю кофе и котов",photo:"https://randomuser.me/api/portraits/women/68.jpg"},
+{name:"Денис",city:"Москва",dept:"Продажи",about:"Футбол и настолки",photo:"https://randomuser.me/api/portraits/men/51.jpg"},
+{name:"Ольга",city:"Владимир",dept:"Продукт",about:"Люблю UX и йогу",photo:"https://randomuser.me/api/portraits/women/12.jpg"},
+{name:"Артём",city:"Москва",dept:"DevOps",about:"Горные лыжи",photo:"https://randomuser.me/api/portraits/men/11.jpg"},
+{name:"Наташа",city:"Питер",dept:"Support",about:"Рисую акварелью",photo:"https://randomuser.me/api/portraits/women/22.jpg"},
+{name:"Кирилл",city:"Новосибирск",dept:"Backend",about:"Люблю велосипеды",photo:"https://randomuser.me/api/portraits/men/45.jpg"},
+{name:"Лена",city:"Москва",dept:"Контент",about:"Квизы и сериалы",photo:"https://randomuser.me/api/portraits/women/33.jpg"},
+{name:"Максим",city:"Калининград",dept:"QA",about:"Настольный теннис",photo:"https://randomuser.me/api/portraits/men/29.jpg"},
+{name:"Катя",city:"Питер",dept:"Дизайн",about:"Иллюстрации и кофе",photo:"https://randomuser.me/api/portraits/women/47.jpg"},
+{name:"Павел",city:"Москва",dept:"Аналитика",about:"Люблю графики и бег",photo:"https://randomuser.me/api/portraits/men/55.jpg"},
+{name:"Света",city:"Владимир",dept:"HR",about:"Йога и книги",photo:"https://randomuser.me/api/portraits/women/41.jpg"},
+{name:"Егор",city:"Новосибирск",dept:"Frontend",about:"Катаюсь на скейте",photo:"https://randomuser.me/api/portraits/men/61.jpg"},
+{name:"Алина",city:"Москва",dept:"Маркетинг",about:"Фотография и путешествия",photo:"https://randomuser.me/api/portraits/women/53.jpg"}
 ]
 
 let index=0
@@ -404,7 +428,7 @@ let vibeClicks=0
 
 function openScreen(id){
 document.querySelectorAll(".screen").forEach(s=>s.style.display="none")
-document.getElementById(id).style.display="block"
+document.getElementById(id).style.display="flex"
 }
 
 function startApp(){
@@ -415,34 +439,20 @@ renderCard()
 function cardHTML(p,active){
 
 return `
-
 <div class="card">
-
 <img src="${p.photo}">
-
 <span class="cityTag">${p.city}</span>
-
 <h3>${p.name}</h3>
-
 <p>${p.dept}</p>
-
 <p>${p.about}</p>
 
 ${active ? `
-
 <div class="actions">
-
 <button class="secondary" onclick="skip()">Пропустить</button>
 <button class="primary" onclick="vibe()">💜 Вайб</button>
+</div>` : ``}
 
-</div>
-
-` : ``}
-
-</div>
-
-`
-
+</div>`
 }
 
 function renderCard(){
@@ -451,9 +461,9 @@ let current=people[index%people.length]
 let prev=people[(index-1+people.length)%people.length]
 let next=people[(index+1)%people.length]
 
-document.getElementById("mainCard").innerHTML=cardHTML(current,true)
-document.getElementById("prevCard").innerHTML=cardHTML(prev,false)
-document.getElementById("nextCard").innerHTML=cardHTML(next,false)
+mainCard.innerHTML=cardHTML(current,true)
+prevCard.innerHTML=cardHTML(prev,false)
+nextCard.innerHTML=cardHTML(next,false)
 
 }
 
@@ -465,26 +475,22 @@ renderCard()
 function vibe(){
 
 vibeClicks++
-
 let current=people[index%people.length]
 
 if(vibeClicks%3==0){
 
-document.getElementById("mainCard").innerHTML=`
+mainCard.innerHTML=`
 
 <div class="card">
 
 <h2>💜 У вас Вайбмэтч!</h2>
-
 <p>Похоже вы на одной волне</p>
 
 <button class="primary" onclick="openChat('${current.name}')">
 Написать
 </button>
 
-</div>
-
-`
+</div>`
 
 }else{
 
@@ -505,51 +511,53 @@ for(let p of people){
 grid.innerHTML+=`
 
 <div class="coffeeCard" id="coffee_${p.name}">
-
 <img src="${p.photo}">
 <b>${p.name}</b>
 <p>${p.about}</p>
-
-<button class="primary" onclick="invite('${p.name}')">
-Позвать
-</button>
-
-</div>
-
-`
+<button class="primary" onclick="invite('${p.name}')">Позвать</button>
+</div>`
 
 }
+
+}
+
+function blindChoice(){
+
+let p=people[Math.floor(Math.random()*people.length)]
+
+coffeePeople.innerHTML=`
+
+<div class="coffeeCard">
+<img src="${p.photo}">
+<b>${p.name}</b>
+<p>${p.about}</p>
+<button class="primary">Позвать!</button>
+</div>`
 
 }
 
 function invite(name){
 
 let card=document.getElementById("coffee_"+name)
-
 card.classList.add("invited")
-
 card.querySelector("button").innerText="☕ приглашение отправлено!"
 
 }
 
 function openChat(name){
 
-document.getElementById("chatName").innerText=name
-document.getElementById("chatModal").style.display="block"
+chatName.innerText=name
+chatModal.style.display="block"
 
 }
 
 function closeChat(){
-
-document.getElementById("chatModal").style.display="none"
-
+chatModal.style.display="none"
 }
 
 function sendMessage(){
 
-let input=document.getElementById("chatInput")
-let text=input.value.trim()
-
+let text=chatInput.value.trim()
 if(!text)return
 
 let msg=document.createElement("div")
@@ -561,9 +569,56 @@ msg.style.marginLeft="auto"
 msg.style.width="max-content"
 msg.innerText=text
 
-document.getElementById("chatMessages").appendChild(msg)
+chatMessages.appendChild(msg)
 
-input.value=""
+chatInput.value=""
+
+setTimeout(fakeReply,1000)
+
+}
+
+function fakeReply(){
+
+let replies=[
+"Привет! 😄",
+"Класс что замэтчились!",
+"Я была в команде «Волоса препятствий» на квизе :DDD",
+"Как дела?",
+"Ты давно в Битриксе?",
+"Надо сходить на кофе ☕"
+]
+
+let text=replies[Math.floor(Math.random()*replies.length)]
+
+let msg=document.createElement("div")
+msg.style.background="white"
+msg.style.padding="6px 10px"
+msg.style.borderRadius="8px"
+msg.style.marginBottom="6px"
+msg.style.width="max-content"
+msg.innerText=text
+
+chatMessages.appendChild(msg)
+
+}
+
+function renderVibes(){
+
+let list=document.getElementById("vibesList")
+list.innerHTML=""
+
+for(let i=0;i<10;i++){
+
+let p=people[Math.floor(Math.random()*people.length)]
+
+list.innerHTML+=`
+
+<div class="vibeCard">
+<img src="${p.photo}">
+<div><b>${p.name}</b><br>💜 У вас вайбмэтч</div>
+</div>`
+
+}
 
 }
 
