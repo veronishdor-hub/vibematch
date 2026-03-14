@@ -5,7 +5,6 @@
 <title>Вайбмэтч</title>
 
 <style>
-
 body{
 margin:0;
 font-family:Arial;
@@ -21,22 +20,26 @@ min-height:100vh;
 box-sizing:border-box;
 display:flex;
 flex-direction:column;
-justify-content:center;
+justify-content:flex-start;
 align-items:center;
 }
 
 h1{text-align:center;}
 
-#start h1{
-font-size:64px; /* в 2 раза больше */
-}
-
+#start h1{font-size:64px;}
 .subtitle{
 text-align:center;
 margin-bottom:30px;
 opacity:0.95;
 font-size:20px;
 line-height:1.6;
+}
+
+.screenHeader{
+text-align:center;
+margin-bottom:10px;
+opacity:0.95;
+font-size:20px;
 }
 
 button{
@@ -109,7 +112,7 @@ display:flex;
 justify-content:center;
 align-items:center;
 gap:16px;
-margin-top:40px;
+margin-top:20px;
 }
 
 #mainCard{width:240px;}
@@ -159,13 +162,20 @@ display:flex;
 gap:10px;
 margin-bottom:20px;
 justify-content:center;
+align-items:center;
+}
+
+.coffeeControls select,
+.coffeeControls button{
+padding:10px;
+font-size:16px;
+border-radius:12px;
 }
 
 .coffeeGrid{
 display:grid;
 grid-template-columns:repeat(3,180px);
 gap:18px;
-margin-top:10px;
 justify-content:center;
 }
 
@@ -303,6 +313,7 @@ margin-top:25px;
 <div class="homeButton" onclick="openScreen('start')">🏠</div>
 <div class="profileButton" onclick="openScreen('profile')">👤</div>
 
+<!-- START -->
 <div id="start" class="screen">
 <h1>Вайбмэтч💜 Битрикс24</h1>
 <p class="subtitle">
@@ -317,8 +328,10 @@ margin-top:25px;
 </div>
 </div>
 
+<!-- MATCH -->
 <div id="match" class="screen">
 <h1>Мэтч режим</h1>
+<div class="screenHeader">Ищи коллег по вайбу!</div>
 <div class="matchContainer">
 <div id="prevCard" class="sideCard"></div>
 <div id="mainCard"></div>
@@ -326,8 +339,10 @@ margin-top:25px;
 </div>
 </div>
 
+<!-- COFFEE -->
 <div id="coffee" class="screen">
 <h1>Random Coffee</h1>
+<div class="screenHeader">Приглашай коллег на кофе (даже вслепую!)</div>
 <div class="coffeeControls">
 <select id="cityFilter">
 <option value="all">Все города</option>
@@ -337,17 +352,22 @@ margin-top:25px;
 <option>Владимир</option>
 <option>Новосибирск</option>
 </select>
-<button class="primary" onclick="generateCoffee()">Пригласить!</button>
-<button class="primary" onclick="refreshAll()">🔄 Обновить</button>
+<button class="primary" onclick="generateCoffee()">Пригласить</button>
+<button class="primary" onclick="refreshAll()">🔄</button>
+<button class="primary" onclick="blindChoice()">Вслепую</button>
 </div>
 <div id="coffeePeople" class="coffeeGrid"></div>
 </div>
 
+<!-- VIBES -->
 <div id="vibes" class="screen">
 <h1>Вайбы</h1>
+<div class="screenHeader">Тут все твои уведомления</div>
+<div id="vibesSummary" class="center" style="margin-bottom:10px;font-size:16px;"></div>
 <div id="vibesList"></div>
 </div>
 
+<!-- PROFILE -->
 <div id="profile" class="screen">
 <h1>Мой профиль</h1>
 <div class="card">
@@ -380,6 +400,7 @@ margin-top:25px;
 </div>
 
 <script>
+// --- PEOPLE ---
 let people=[
 {name:"Анна",city:"Москва",dept:"Маркетинг",about:"Люблю бег и пазлы",photo:"https://randomuser.me/api/portraits/women/21.jpg"},
 {name:"Игорь",city:"Питер",dept:"Разработка",about:"Катаюсь на сноуборде",photo:"https://randomuser.me/api/portraits/men/22.jpg"},
@@ -398,30 +419,24 @@ let people=[
 {name:"Алина",city:"Москва",dept:"Маркетинг",about:"Фотография и путешествия",photo:"https://randomuser.me/api/portraits/women/35.jpg"}
 ]
 
-let index=0
-let vibeClicks=0
-let refreshCount=0
+// --- VARIABLES ---
+let index=0, vibeClicks=0, refreshCount=0, totalVibes=0, totalCoffeeInvites=0
 
+// --- SCREEN ---
 function openScreen(id){
 document.querySelectorAll(".screen").forEach(s=>s.style.display="none")
 document.getElementById(id).style.display="flex"
 }
 
-function startApp(){
-openScreen("match")
-renderCard()
-}
-
+// --- MATCH ---
 function cardHTML(p,active){
-return `
-<div class="card">
+return `<div class="card">
 <img src="${p.photo}">
 <span class="cityTag">${p.city}</span>
 <h3>${p.name}</h3>
 <p>${p.dept}</p>
 <p>${p.about}</p>
-${active?`
-<div class="actions">
+${active?`<div class="actions">
 <button class="secondary" onclick="skip()">Пропустить</button>
 <button class="primary" onclick="vibe()">💜 Вайб</button>
 </div>`:""}
@@ -439,18 +454,16 @@ nextCard.innerHTML=cardHTML(next,false)
 
 function skip(){index++;renderCard()}
 function vibe(){
-vibeClicks++
+vibeClicks++; totalVibes++;
 let current=people[index%people.length]
 if(vibeClicks%3==0){
 mainCard.innerHTML=`<div class="card"><h2>💜 У вас Вайбмэтч!</h2><p>Похоже вы на одной волне</p><button class="primary" onclick="openChat('${current.name}')">Написать</button></div>`
 }else{index++;renderCard()}
 }
 
-// ---------------- COFFEE ----------------
-
+// --- COFFEE ---
 function generateCoffee(){
-let grid=document.getElementById("coffeePeople")
-grid.innerHTML=""
+let grid=document.getElementById("coffeePeople"); grid.innerHTML=""
 let city=document.getElementById("cityFilter").value
 let filtered=people.filter(p=>city==="all"?true:p.city===city)
 for(let p of filtered){
@@ -461,30 +474,28 @@ grid.innerHTML+=`<div class="coffeeCard" id="coffee_${p.name}"><img src="${p.pho
 function refreshAll(){
 if(refreshCount>=3){alert("Лимит обновлений исчерпан 🙂");return}
 refreshCount++
-let city=document.getElementById("cityFilter").value
-let filtered=people.filter(p=>city==="all"?true:p.city===city)
-let grid=document.getElementById("coffeePeople")
-grid.innerHTML=""
-for(let p of filtered){
-grid.innerHTML+=`<div class="coffeeCard" id="coffee_${p.name}" style="animation:pop 0.5s ease"><img src="${p.photo}"><b>${p.name}</b><p>${p.about}</p><button class="primary" onclick="invite('${p.name}')">Позвать</button></div>`
-}
+generateCoffee()
+document.querySelectorAll(".coffeeCard").forEach(c=>c.style.animation="pop 0.5s ease")
 }
 
 function blindChoice(){
 let city=document.getElementById("cityFilter").value
 let filtered=people.filter(p=>city==="all"?true:p.city===city)
 let p=filtered[Math.floor(Math.random()*filtered.length)]
+totalCoffeeInvites++
 coffeePeople.innerHTML=`<div style="display:flex;justify-content:center;width:100%;margin-top:40px;"><div class="coffeeCard" style="animation:pop 0.5s ease"><img src="${p.photo}"><b>${p.name}</b><p>${p.about}</p><button class="primary" onclick="invite('${p.name}')">Позвать!</button></div></div>`
 }
 
 function invite(name){
 let card=document.getElementById("coffee_"+name)
+if(card){
 card.classList.add("invited")
 card.querySelector("button").innerText="☕ приглашение отправлено!"
+totalCoffeeInvites++
+}
 }
 
-// ---------------- CHAT ----------------
-
+// --- CHAT ---
 function openChat(name){chatName.innerText=name;chatModal.style.display="block"}
 function closeChat(){chatModal.style.display="none"}
 function sendMessage(){
@@ -515,23 +526,14 @@ msg.innerText=text
 chatMessages.appendChild(msg)
 }
 
-// ---------------- VIBES ----------------
-
+// --- VIBES ---
 function renderVibes(){
 let list=document.getElementById("vibesList")
 list.innerHTML=""
+document.getElementById("vibesSummary").innerText=`Тебе поставили ${totalVibes} вайбов и ${totalCoffeeInvites} раз позвали на кофе`
 let types=["match","coffee"]
 for(let i=0;i<10;i++){
 let p=people[Math.floor(Math.random()*people.length)]
 let type=types[Math.floor(Math.random()*types.length)]
 let text=type==="match"?"💜 У вас вайбмэтч":"☕ Тебя пригласили на кофе"
-list.innerHTML+=`<div class="vibeCard"><div style="display:flex;align-items:center;gap:10px;"><img src="${p.photo}"><div><b>${p.name}</b><br>${text}</div></div><button class="primary" onclick="openChat('${p.name}')">Перейти в чат</button></div>`
-}
-}
-
-window.onload=function(){openScreen("start")}
-
-</script>
-
-</body>
-</html>
+list.innerHTML+=`<div class="vibeCard"><
