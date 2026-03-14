@@ -151,10 +151,10 @@ margin-top:10px;
 
 .coffeeGrid{
 display:grid;
-grid-template-columns:1fr 1fr;
-gap:14px;
+grid-template-columns:repeat(3,180px);
+gap:18px;
 margin-top:20px;
-justify-items:center;
+justify-content:center;
 }
 
 .coffeeCard{
@@ -271,6 +271,22 @@ font-weight:bold;
 margin-top:25px;
 }
 
+/* BLIND CHOICE ANIMATION */
+
+@keyframes pop{
+0%{
+transform:scale(0.5);
+opacity:0;
+}
+70%{
+transform:scale(1.1);
+}
+100%{
+transform:scale(1);
+opacity:1;
+}
+}
+
 </style>
 </head>
 
@@ -377,7 +393,7 @@ margin-top:25px;
 🔥<br>Мэтч
 </div>
 
-<div class="navItem" onclick="openScreen('coffee')">
+<div class="navItem" onclick="openScreen('coffee');generateCoffee();">
 ☕<br>Coffee
 </div>
 
@@ -406,25 +422,26 @@ margin-top:25px;
 <script>
 
 let people=[
-{name:"Анна",city:"Москва",dept:"Маркетинг",about:"Люблю бег и собирать пазлы",photo:"https://randomuser.me/api/portraits/women/44.jpg"},
-{name:"Игорь",city:"Питер",dept:"Разработка",about:"Катаюсь на сноуборде",photo:"https://randomuser.me/api/portraits/men/32.jpg"},
-{name:"Мария",city:"Калининград",dept:"HR",about:"Обожаю кофе и котов",photo:"https://randomuser.me/api/portraits/women/68.jpg"},
-{name:"Денис",city:"Москва",dept:"Продажи",about:"Футбол и настолки",photo:"https://randomuser.me/api/portraits/men/51.jpg"},
-{name:"Ольга",city:"Владимир",dept:"Продукт",about:"Люблю UX и йогу",photo:"https://randomuser.me/api/portraits/women/12.jpg"},
-{name:"Артём",city:"Москва",dept:"DevOps",about:"Горные лыжи",photo:"https://randomuser.me/api/portraits/men/11.jpg"},
-{name:"Наташа",city:"Питер",dept:"Support",about:"Рисую акварелью",photo:"https://randomuser.me/api/portraits/women/22.jpg"},
-{name:"Кирилл",city:"Новосибирск",dept:"Backend",about:"Люблю велосипеды",photo:"https://randomuser.me/api/portraits/men/45.jpg"},
-{name:"Лена",city:"Москва",dept:"Контент",about:"Квизы и сериалы",photo:"https://randomuser.me/api/portraits/women/33.jpg"},
-{name:"Максим",city:"Калининград",dept:"QA",about:"Настольный теннис",photo:"https://randomuser.me/api/portraits/men/29.jpg"},
-{name:"Катя",city:"Питер",dept:"Дизайн",about:"Иллюстрации и кофе",photo:"https://randomuser.me/api/portraits/women/47.jpg"},
-{name:"Павел",city:"Москва",dept:"Аналитика",about:"Люблю графики и бег",photo:"https://randomuser.me/api/portraits/men/55.jpg"},
-{name:"Света",city:"Владимир",dept:"HR",about:"Йога и книги",photo:"https://randomuser.me/api/portraits/women/41.jpg"},
-{name:"Егор",city:"Новосибирск",dept:"Frontend",about:"Катаюсь на скейте",photo:"https://randomuser.me/api/portraits/men/61.jpg"},
-{name:"Алина",city:"Москва",dept:"Маркетинг",about:"Фотография и путешествия",photo:"https://randomuser.me/api/portraits/women/53.jpg"}
+{name:"Анна",city:"Москва",dept:"Маркетинг",about:"Люблю бег и собирать пазлы",photo:"https://randomuser.me/api/portraits/women/1.jpg"},
+{name:"Игорь",city:"Питер",dept:"Разработка",about:"Катаюсь на сноуборде",photo:"https://randomuser.me/api/portraits/men/2.jpg"},
+{name:"Мария",city:"Калининград",dept:"HR",about:"Обожаю кофе и котов",photo:"https://randomuser.me/api/portraits/women/3.jpg"},
+{name:"Денис",city:"Москва",dept:"Продажи",about:"Футбол и настолки",photo:"https://randomuser.me/api/portraits/men/4.jpg"},
+{name:"Ольга",city:"Владимир",dept:"Продукт",about:"Люблю UX и йогу",photo:"https://randomuser.me/api/portraits/women/5.jpg"},
+{name:"Артём",city:"Москва",dept:"DevOps",about:"Горные лыжи",photo:"https://randomuser.me/api/portraits/men/6.jpg"},
+{name:"Наташа",city:"Питер",dept:"Support",about:"Рисую акварелью",photo:"https://randomuser.me/api/portraits/women/7.jpg"},
+{name:"Кирилл",city:"Новосибирск",dept:"Backend",about:"Люблю велосипеды",photo:"https://randomuser.me/api/portraits/men/8.jpg"},
+{name:"Лена",city:"Москва",dept:"Контент",about:"Квизы и сериалы",photo:"https://randomuser.me/api/portraits/women/9.jpg"},
+{name:"Максим",city:"Калининград",dept:"QA",about:"Настольный теннис",photo:"https://randomuser.me/api/portraits/men/10.jpg"},
+{name:"Катя",city:"Питер",dept:"Дизайн",about:"Иллюстрации и кофе",photo:"https://randomuser.me/api/portraits/women/11.jpg"},
+{name:"Павел",city:"Москва",dept:"Аналитика",about:"Люблю графики и бег",photo:"https://randomuser.me/api/portraits/men/12.jpg"},
+{name:"Света",city:"Владимир",dept:"HR",about:"Йога и книги",photo:"https://randomuser.me/api/portraits/women/13.jpg"},
+{name:"Егор",city:"Новосибирск",dept:"Frontend",about:"Катаюсь на скейте",photo:"https://randomuser.me/api/portraits/men/14.jpg"},
+{name:"Алина",city:"Москва",dept:"Маркетинг",about:"Фотография и путешествия",photo:"https://randomuser.me/api/portraits/women/15.jpg"}
 ]
 
 let index=0
 let vibeClicks=0
+let refreshCount=0
 
 function openScreen(id){
 document.querySelectorAll(".screen").forEach(s=>s.style.display="none")
@@ -506,7 +523,14 @@ function generateCoffee(){
 let grid=document.getElementById("coffeePeople")
 grid.innerHTML=""
 
-for(let p of people){
+let city=document.getElementById("cityFilter").value
+
+let filtered = people.filter(p=>{
+if(city==="all") return true
+return p.city===city
+})
+
+for(let p of filtered){
 
 grid.innerHTML+=`
 
@@ -514,10 +538,49 @@ grid.innerHTML+=`
 <img src="${p.photo}">
 <b>${p.name}</b>
 <p>${p.about}</p>
+
+<div style="display:flex;gap:6px;justify-content:center">
+
 <button class="primary" onclick="invite('${p.name}')">Позвать</button>
+
+<button onclick="refreshCard('${p.name}')">🔄</button>
+
+</div>
+
 </div>`
 
 }
+
+}
+
+function refreshCard(name){
+
+if(refreshCount>=3){
+alert("Лимит обновлений исчерпан 🙂")
+return
+}
+
+refreshCount++
+
+let card=document.getElementById("coffee_"+name)
+
+let p=people[Math.floor(Math.random()*people.length)]
+
+card.innerHTML=`
+
+<img src="${p.photo}">
+<b>${p.name}</b>
+<p>${p.about}</p>
+
+<div style="display:flex;gap:6px;justify-content:center">
+
+<button class="primary" onclick="invite('${p.name}')">Позвать</button>
+
+<button onclick="refreshCard('${p.name}')">🔄</button>
+
+</div>
+
+`
 
 }
 
@@ -527,11 +590,25 @@ let p=people[Math.floor(Math.random()*people.length)]
 
 coffeePeople.innerHTML=`
 
-<div class="coffeeCard">
+<div style="
+display:flex;
+justify-content:center;
+width:100%;
+margin-top:40px;
+">
+
+<div class="coffeeCard" style="animation:pop 0.5s ease">
+
 <img src="${p.photo}">
 <b>${p.name}</b>
 <p>${p.about}</p>
-<button class="primary">Позвать!</button>
+
+<button class="primary" onclick="invite('${p.name}')">
+Позвать!
+</button>
+
+</div>
+
 </div>`
 
 }
@@ -607,15 +684,34 @@ function renderVibes(){
 let list=document.getElementById("vibesList")
 list.innerHTML=""
 
+let types=[
+"match",
+"coffee"
+]
+
 for(let i=0;i<10;i++){
 
 let p=people[Math.floor(Math.random()*people.length)]
+let type=types[Math.floor(Math.random()*types.length)]
+
+let text=""
+
+if(type==="match"){
+text="💜 У вас вайбмэтч"
+}
+
+if(type==="coffee"){
+text="☕ Тебя пригласили на кофе"
+}
 
 list.innerHTML+=`
 
 <div class="vibeCard">
 <img src="${p.photo}">
-<div><b>${p.name}</b><br>💜 У вас вайбмэтч</div>
+<div>
+<b>${p.name}</b><br>
+${text}
+</div>
 </div>`
 
 }
