@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -154,11 +153,19 @@ color:black;
 border-radius:12px;
 padding:10px;
 text-align:center;
+transition:0.3s;
 }
 
 .coffeeCard img{
 width:100%;
 border-radius:8px;
+}
+
+/* INVITE ANIMATION */
+
+.invited{
+background:#eaff00;
+transform:scale(1.05);
 }
 
 /* VIBES */
@@ -199,6 +206,24 @@ font-size:14px;
 cursor:pointer;
 }
 
+/* CHAT */
+
+#chatModal{
+display:none;
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+height:60%;
+background:white;
+color:black;
+border-top-left-radius:20px;
+border-top-right-radius:20px;
+box-shadow:0 -10px 30px rgba(0,0,0,0.3);
+padding:20px;
+box-sizing:border-box;
+}
+
 /* DECOR */
 
 .decor{
@@ -225,30 +250,6 @@ right:-40px;
 filter:blur(60px);
 }
 
-.d3{
-width:16px;
-height:16px;
-background:#eaff00;
-top:25%;
-left:10%;
-}
-
-.d4{
-width:10px;
-height:10px;
-background:#eaff00;
-top:70%;
-left:20%;
-}
-
-.d5{
-width:14px;
-height:14px;
-background:#eaff00;
-top:40%;
-right:18%;
-}
-
 input,textarea,select{
 width:100%;
 padding:8px;
@@ -270,14 +271,9 @@ margin-top:25px;
 
 <div class="decor d1"></div>
 <div class="decor d2"></div>
-<div class="decor d3"></div>
-<div class="decor d4"></div>
-<div class="decor d5"></div>
 
 <div class="homeButton" onclick="openScreen('start')">🏠</div>
 <div class="profileButton" onclick="openScreen('profile')">👤</div>
-
-<!-- START -->
 
 <div id="start" class="screen">
 
@@ -285,29 +281,21 @@ margin-top:25px;
 
 <p class="subtitle">
 
-Пространство для новых знакомств, людей и впечатлений!<br><br>
-
 🔥 Мэтч — ищи коллег по вайбу<br>
-☕ Random Coffee — приглашай на кофе случайных коллег<br>
-💌 Вайбы — кто написал и позвал на кофе?
+☕ Random Coffee — приглашай случайных коллег<br>
+💌 Вайбы — кто написал и позвал на кофе
 
 </p>
 
 <div class="center">
 
-<button class="primary" onclick="startApp()">
-Начать
-</button>
+<button class="primary" onclick="startApp()">Начать</button>
 
-<div class="cta">
-Давай знакомиться!
-</div>
+<div class="cta">Давай знакомиться!</div>
 
 </div>
 
 </div>
-
-<!-- MATCH -->
 
 <div id="match" class="screen">
 
@@ -316,16 +304,12 @@ margin-top:25px;
 <div class="matchContainer">
 
 <div id="prevCard" class="sideCard"></div>
-
 <div id="mainCard"></div>
-
 <div id="nextCard" class="sideCard"></div>
 
 </div>
 
 </div>
-
-<!-- COFFEE -->
 
 <div id="coffee" class="screen">
 
@@ -333,22 +317,8 @@ margin-top:25px;
 
 <div class="center">
 
-<select id="cityFilter">
-<option value="all">Все города</option>
-<option>Москва</option>
-<option>Питер</option>
-<option>Калининград</option>
-<option>Владимир</option>
-</select>
-
 <button class="primary" onclick="generateCoffee()">
 Пригласить!
-</button>
-
-<br><br>
-
-<button onclick="blindChoice()">
-Выбрать вслепую
 </button>
 
 </div>
@@ -356,8 +326,6 @@ margin-top:25px;
 <div id="coffeePeople" class="coffeeGrid"></div>
 
 </div>
-
-<!-- VIBES -->
 
 <div id="vibes" class="screen">
 
@@ -368,14 +336,7 @@ margin-top:25px;
 <div><b>Анна</b><br>💜 У вас вайбмэтч</div>
 </div>
 
-<div class="vibeCard">
-<img src="https://randomuser.me/api/portraits/men/32.jpg">
-<div><b>Игорь</b><br>☕ Позвал тебя на кофе</div>
 </div>
-
-</div>
-
-<!-- PROFILE -->
 
 <div id="profile" class="screen">
 
@@ -390,17 +351,11 @@ margin-top:25px;
 
 <textarea placeholder="О себе"></textarea>
 
-<input type="file">
-
-<button class="primary">
-Сохранить
-</button>
+<button class="primary">Сохранить</button>
 
 </div>
 
 </div>
-
-<!-- NAV -->
 
 <div class="bottomNav">
 
@@ -418,15 +373,29 @@ margin-top:25px;
 
 </div>
 
+<div id="chatModal">
+
+<div style="display:flex;justify-content:space-between">
+<b id="chatName">Чат</b>
+<button onclick="closeChat()">✖</button>
+</div>
+
+<div id="chatMessages" style="height:70%;overflow:auto;background:#f3f3f3;border-radius:10px;padding:10px;margin:10px 0"></div>
+
+<div style="display:flex;gap:8px">
+<input id="chatInput" placeholder="Написать..." style="flex:1">
+<button class="primary" onclick="sendMessage()">➤</button>
+</div>
+
+</div>
+
 <script>
 
 let people=[
 
 {name:"Анна",city:"Москва",dept:"Маркетинг",about:"Люблю бег",photo:"https://randomuser.me/api/portraits/women/44.jpg"},
 {name:"Игорь",city:"Питер",dept:"Разработка",about:"Пишу код",photo:"https://randomuser.me/api/portraits/men/32.jpg"},
-{name:"Мария",city:"Калининград",dept:"HR",about:"Обожаю кофе",photo:"https://randomuser.me/api/portraits/women/68.jpg"},
-{name:"Денис",city:"Москва",dept:"Продажи",about:"Футбол",photo:"https://randomuser.me/api/portraits/men/51.jpg"},
-{name:"Ольга",city:"Владимир",dept:"Продукт",about:"Люблю UX",photo:"https://randomuser.me/api/portraits/women/12.jpg"}
+{name:"Мария",city:"Калининград",dept:"HR",about:"Обожаю кофе",photo:"https://randomuser.me/api/portraits/women/68.jpg"}
 
 ]
 
@@ -464,7 +433,6 @@ ${active ? `
 <div class="actions">
 
 <button class="secondary" onclick="skip()">Пропустить</button>
-
 <button class="primary" onclick="vibe()">💜 Вайб</button>
 
 </div>
@@ -498,6 +466,8 @@ function vibe(){
 
 vibeClicks++
 
+let current=people[index%people.length]
+
 if(vibeClicks%3==0){
 
 document.getElementById("mainCard").innerHTML=`
@@ -508,7 +478,9 @@ document.getElementById("mainCard").innerHTML=`
 
 <p>Похоже вы на одной волне</p>
 
-<button class="primary">Написать</button>
+<button class="primary" onclick="openChat('${current.name}')">
+Написать
+</button>
 
 </div>
 
@@ -528,21 +500,19 @@ function generateCoffee(){
 let grid=document.getElementById("coffeePeople")
 grid.innerHTML=""
 
-for(let i=0;i<4;i++){
-
-let p=people[Math.floor(Math.random()*people.length)]
+for(let p of people){
 
 grid.innerHTML+=`
 
-<div class="coffeeCard">
+<div class="coffeeCard" id="coffee_${p.name}">
 
 <img src="${p.photo}">
-
 <b>${p.name}</b>
-
 <p>${p.about}</p>
 
-<button class="primary">Позвать</button>
+<button class="primary" onclick="invite('${p.name}')">
+Позвать
+</button>
 
 </div>
 
@@ -552,25 +522,48 @@ grid.innerHTML+=`
 
 }
 
-function blindChoice(){
+function invite(name){
 
-let p=people[Math.floor(Math.random()*people.length)]
+let card=document.getElementById("coffee_"+name)
 
-document.getElementById("coffeePeople").innerHTML=`
+card.classList.add("invited")
 
-<div class="coffeeCard">
+card.querySelector("button").innerText="☕ приглашение отправлено!"
 
-<img src="${p.photo}">
+}
 
-<b>${p.name}</b>
+function openChat(name){
 
-<p>${p.about}</p>
+document.getElementById("chatName").innerText=name
+document.getElementById("chatModal").style.display="block"
 
-<button class="primary">Позвать!</button>
+}
 
-</div>
+function closeChat(){
 
-`
+document.getElementById("chatModal").style.display="none"
+
+}
+
+function sendMessage(){
+
+let input=document.getElementById("chatInput")
+let text=input.value.trim()
+
+if(!text)return
+
+let msg=document.createElement("div")
+msg.style.background="#eaff00"
+msg.style.padding="6px 10px"
+msg.style.borderRadius="8px"
+msg.style.marginBottom="6px"
+msg.style.marginLeft="auto"
+msg.style.width="max-content"
+msg.innerText=text
+
+document.getElementById("chatMessages").appendChild(msg)
+
+input.value=""
 
 }
 
@@ -582,4 +575,3 @@ openScreen("start")
 
 </body>
 </html>
-```
